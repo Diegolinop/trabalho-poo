@@ -16,27 +16,7 @@ public abstract class Pessoa {
         this.telefone = telefone;
         this.endereco = endereco;
     }
-    
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-    
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-    
     public String getCpf() {
         return cpf;
     }
@@ -52,8 +32,14 @@ public abstract class Pessoa {
     public String getTelefone() {
         return telefone;
     }
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
     
     public String getEndereco() {
         return endereco;
+    }
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }
