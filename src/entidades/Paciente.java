@@ -1,14 +1,16 @@
 package entidades;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class Paciente extends Pessoa {
     private String tipoConvenio;
-    private String dataNascimento;
+    private LocalDate dataNascimento;
     
     // Acesso somente se for médico
     private Boolean fuma;
     private Boolean bebe;
-    private String colesterol;
+    private double colesterol;
     private Boolean diabetes;
     private Boolean doencaCardiaca;
     private ArrayList<String> cirurgias;
@@ -19,15 +21,13 @@ public class Paciente extends Pessoa {
         this.cirurgias = new ArrayList<>();
     }
     
-    public Paciente(String cpf, String nome, String sobrenome, String telefone, String endereco, String tipoConvenio, String dataNascimento) {
+    public Paciente(String cpf, String nome, String sobrenome, String telefone, String endereco, String tipoConvenio, LocalDate dataNascimento) {
         super(cpf, nome, sobrenome, telefone, endereco);
         this.tipoConvenio = tipoConvenio;
         this.dataNascimento = dataNascimento;
         this.fuma = false;
-        this.alergias = new ArrayList();
-        this.fuma = false;
         this.bebe = false;
-        this.colesterol = "";
+        this.colesterol = 0;
         this.diabetes = false;
         this.doencaCardiaca = false;
         this.alergias = new ArrayList<>();
@@ -41,8 +41,15 @@ public class Paciente extends Pessoa {
         this.tipoConvenio = tipoConvenio;
     }
     
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return this.dataNascimento;
+    }
+    
+    public Period calcularIdade() {
+        Period idade = Period.between(LocalDate.now(), getDataNascimento());
+        System.out.println("Idade do Paciente " + getNome() + ":");
+        System.out.println(idade.getYears() + "anos e " + idade.getMonths());
+        return idade;
     }
     
     public Boolean getFuma() {
@@ -59,10 +66,10 @@ public class Paciente extends Pessoa {
         this.bebe = bebe;
     }
 
-    public String getColesterol() {
+    public double getColesterol() {
         return this.colesterol;
     }
-    public void setColesterol(String colesterol) {
+    public void setColesterol(double colesterol) {
         this.colesterol = colesterol;
     }
 
@@ -104,5 +111,10 @@ public class Paciente extends Pessoa {
         if (this.cirurgias.contains(cirurgia)) {
             this.cirurgias.remove(cirurgia);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "Paciente{nome=" + getNome() + ", cpf=" + getCpf() + "}";
     }
 }

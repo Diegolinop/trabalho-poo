@@ -1,6 +1,7 @@
 package main;
 
 import entidades.Paciente;
+import servicos.GerenciadorPacientes;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,6 +14,7 @@ public class Main {
             "Plano Unimed", 
             "08/10/2006"
         );
+        GerenciadorPacientes gerenciadorPacientes = new GerenciadorPacientes();
 
         paciente.setFuma(true);
         paciente.setBebe(true);
@@ -29,11 +31,8 @@ public class Main {
         paciente.adicionarCirurgia("Apendicite (2018)");
         paciente.adicionarCirurgia("Remoção de dente siso (2022)");
 
-        System.out.println("Nome Completo: " + paciente.getNome() + " " + paciente.getSobrenome());
-        System.out.println("CPF: " + paciente.getCpf());
-        System.out.println("Telefone: " + paciente.getTelefone());
-        System.out.println("Convênio: " + paciente.getTipoConvenio());
-        System.out.println("Data de Nascimento: " + paciente.getDataNascimento());
+        gerenciadorPacientes.adicionarCliente(paciente);
+        gerenciadorPacientes.lerDadosPaciente(paciente.getCpf());
         
         System.out.println("Fumante? " + (paciente.getFuma() ? "Sim" : "Não"));
         System.out.println("Consome álcool? " + (paciente.getBebe() ? "Sim" : "Não"));
