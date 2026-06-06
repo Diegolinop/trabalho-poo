@@ -69,29 +69,29 @@ public class MedicoService {
         dados.setDoencaCardiaca(doencaCardiaca);
     }
 
-    public void atualizarHistoricoMedico(Paciente paciente, int opcao, boolean valor) {
+    public void atualizarFumaPaciente(Paciente paciente, boolean fuma) {
         HistoricoMedico dados = paciente.getHistoricoMedico();
-        
-        switch (opcao) {
-            case 1:
-                dados.setFuma(valor);
-                break;
-            case 2:
-                dados.setBebe(valor);
-                break;
-            case 3:
-                dados.setColesterol(valor);
-                break;
-            case 4:
-                dados.setDiabete(valor);
-                break;
-            case 5:
-                dados.setDoencaCardiaca(valor);
-                break;
-            default:
-                System.out.println("Opção inválida! Tente novamente.");
-                break;
-        }
+        dados.setFuma(fuma);
+    }
+
+    public void atualizarBebePaciente(Paciente paciente, boolean bebe) {
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        dados.setBebe(bebe);
+    }
+
+    public void atualizarColesterolPaciente(Paciente paciente, boolean colesterol) {
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        dados.setColesterol(colesterol);
+    }
+
+    public void atualizarDiabetePaciente(Paciente paciente, boolean diabete) {
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        dados.setDiabete(diabete);
+    }
+
+    public void atualizarDoencaCardiacaPaciente(Paciente paciente, boolean doencaCardiaca) {
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        dados.setDoencaCardiaca(doencaCardiaca);
     }
 
     public void removerHistoricoMedico(Paciente paciente) {

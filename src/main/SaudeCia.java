@@ -140,8 +140,9 @@ public class SaudeCia {
             System.out.println("1 - Cadastrar Paciente");
             System.out.println("2 - Listar Pacientes");
             System.out.println("3 - Remover Paciente");
-            System.out.println("4 - Agendar Consulta");
-            System.out.println("5 - Cancelar Consulta");
+            System.out.println("4 - Atualizar Paciente");
+            System.out.println("5 - Agendar Consulta");
+            System.out.println("6 - Cancelar Consulta");
             System.out.println("0 - Voltar ao Menu Principal\n");
 
             System.out.print("Escolha uma opção: ");
@@ -161,9 +162,12 @@ public class SaudeCia {
                     secretariaService.removerPaciente(leitura.nextLine());
                     break;
                 case 4:
-                    agendarConsulta(leitura, secretariaService);
+                    atualizarPaciente(leitura, secretariaService);
                     break;
                 case 5:
+                    agendarConsulta(leitura, secretariaService);
+                    break;
+                case 6:
                     cancelarConsulta(leitura, secretariaService);
                     break;
                 case 0:
@@ -211,6 +215,70 @@ public class SaudeCia {
                     + " | Nome: " + paciente.getNomeCompleto()
                     + " | Convênio: " + paciente.getTipoConvenio());
         }
+    }
+
+    private static void atualizarPaciente(Scanner leitura, SecretariaService secretariaService) {
+        System.out.println("\n--- ATUALIZAR PACIENTE ---");
+        System.out.print("Digite o CPF do paciente a ser atualizado: ");
+        Paciente paciente = secretariaService.buscarPacientePorCpf(leitura.nextLine());
+
+        if (paciente == null) {
+            return;
+        }
+
+        int opcao;
+
+        do {
+            System.out.println("\nQual dado deseja atualizar?");
+            System.out.println("1 - Nome");
+            System.out.println("2 - Sobrenome");
+            System.out.println("3 - Telefone");
+            System.out.println("4 - Email");
+            System.out.println("5 - Endereço");
+            System.out.println("6 - Tipo de Convênio");
+            System.out.println("7 - Data de Nascimento");
+            System.out.println("0 - Cancelar atualização");
+
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+
+            if (opcao > 0 && opcao < 8) {
+                System.out.print("Informe o novo valor: ");
+                String novoValor = leitura.nextLine();
+
+                switch (opcao) {
+                    case 1:
+                        secretariaService.atualizarNomePaciente(paciente, novoValor);
+                        break;
+                    case 2:
+                        secretariaService.atualizarSobrenomePaciente(paciente, novoValor);
+                        break;
+                    case 3:
+                        secretariaService.atualizarTelefonePaciente(paciente, novoValor);
+                        break;
+                    case 4:
+                        secretariaService.atualizarEmailPaciente(paciente, novoValor);
+                        break;
+                    case 5:
+                        secretariaService.atualizarEnderecoPaciente(paciente, novoValor);
+                        break;
+                    case 6:
+                        secretariaService.atualizarTipoConvenioPaciente(paciente, novoValor);
+                        break;
+                    case 7:
+                        secretariaService.atualizarDataNascimentoPaciente(paciente, novoValor);
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
+
+                System.out.println("Dados do paciente atualizados com sucesso.");
+            } else if (opcao != 0) {
+                System.out.println("Opção inválida! Tente novamente.");
+            }
+        } while (opcao != 0);
     }
 
     private static void agendarConsulta(Scanner leitura, SecretariaService secretariaService) {
@@ -421,11 +489,30 @@ public class SaudeCia {
             if (opcao > 0 && opcao < 6) {
                 boolean valor;
                 
-                System.out.println("Paciente não encontrado.");
+                System.out.print("Informe o novo valor (true/false): ");
                 valor = leitura.nextBoolean();
                 leitura.nextLine();
-            
-                medicoService.atualizarHistoricoMedico(paciente, opcao, valor);
+
+                switch (opcao) {
+                    case 1:
+                        medicoService.atualizarFumaPaciente(paciente, valor);
+                        break;
+                    case 2:
+                        medicoService.atualizarBebePaciente(paciente, valor);
+                        break;
+                    case 3:
+                        medicoService.atualizarColesterolPaciente(paciente, valor);
+                        break;
+                    case 4:
+                        medicoService.atualizarDiabetePaciente(paciente, valor);
+                        break;
+                    case 5:
+                        medicoService.atualizarDoencaCardiacaPaciente(paciente, valor);
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
             }
             else if (opcao == 6) {
                 System.out.println("Deseja adicionar ou remover uma cirurgia do cadastro?");

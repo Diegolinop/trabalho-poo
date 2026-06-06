@@ -69,12 +69,32 @@ public class SecretariaService {
         return consultaRepository.buscarPorCpfPaciente(cpf);
     }
 
-    public void atualizarPaciente(Paciente paciente, String telefone, String email, String endereco, String convenio) {
+    public void atualizarNomePaciente(Paciente paciente, String nome) {
+        paciente.setNome(nome);
+    }
+
+    public void atualizarSobrenomePaciente(Paciente paciente, String sobrenome) {
+        paciente.setSobrenome(sobrenome);
+    }
+
+    public void atualizarTelefonePaciente(Paciente paciente, String telefone) {
         paciente.setTelefone(telefone);
+    }
+
+    public void atualizarEmailPaciente(Paciente paciente, String email) {
         paciente.setEmail(email);
+    }
+
+    public void atualizarEnderecoPaciente(Paciente paciente, String endereco) {
         paciente.setEndereco(endereco);
-        paciente.setTipoConvenio(convenio);
-        System.out.println("Dados do paciente atualizados com sucesso");
+    }
+
+    public void atualizarTipoConvenioPaciente(Paciente paciente, String tipoConvenio) {
+        paciente.setTipoConvenio(tipoConvenio);
+    }
+
+    public void atualizarDataNascimentoPaciente(Paciente paciente, String dataNascimento) {
+        paciente.setDataNascimento(dataNascimento);
     }
 
     public void agendarConsulta(Consulta novaConsulta) {
