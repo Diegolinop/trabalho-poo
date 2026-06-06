@@ -297,6 +297,7 @@ public class SaudeCia {
         int opcao;
 
         do {
+            System.out.println("\n");
             System.out.println("1 - Cadastrar histórico médico");
             System.out.println("2 - Atualizar histórico médico");
             System.out.println("3 - Remover histórico médico");
@@ -444,7 +445,7 @@ public class SaudeCia {
                     case 2:
                         System.out.println("Digite o nome da cirurgia a ser adicionada: ");
                         String cirurgiaRemovida = leitura.nextLine();
-                        medicoService.adicionarCirurgiaPaciente(paciente, cirurgiaRemovida);
+                        medicoService.removerCirurgiaPaciente(paciente, cirurgiaRemovida);
                         break;
                     default:
                         System.out.println("Opção inválida! Tente novamente.");
@@ -469,7 +470,7 @@ public class SaudeCia {
                     case 2:
                         System.out.println("Digite o nome da alergia a ser adicionada: ");
                         String alergiaRemovida = leitura.nextLine();
-                        medicoService.adicionarAlergiaPaciente(paciente, alergiaRemovida);
+                        medicoService.removerAlergiaPaciente(paciente, alergiaRemovida);
                         break;
                     default:
                         System.out.println("Opção inválida! Tente novamente.");
@@ -482,7 +483,9 @@ public class SaudeCia {
         System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " atualizados com sucesso!");
     }
     
-    // ==================================
+    // ======================================
+    
+    // PRONTUÁRIOS ==========================
     
     private static void gerenciarProntuarios(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         System.out.println("\n--- GERENCIAR PRONTUÁRIOS ---");
@@ -490,24 +493,79 @@ public class SaudeCia {
         Paciente pacienteProntuario = medicoService.buscarPacientePorCpf(leitura.nextLine());
 
         if (pacienteProntuario == null) {
-            System.out.println("Paciente não encontrado.");
+            System.out.println("Não foi encontrado paciente registrado com o cpf digitado");
             return;
         }
 
+        int opcao;
+
+        do {
+            System.out.println("\n");
+            System.out.println("1 - Cadastrar prontuário");
+            System.out.println("2 - Atualizar prontuário");
+            System.out.println("3 - Remover prontuário");
+            System.out.println("4 - Mostrar prontuário");
+            System.out.println("5 - Mostrar lista de prontuários");
+
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+            
+            switch (opcao) {
+                case 1:
+                    cadastrarProntuario(leitura, medicoService, medicoLogin, pacienteProntuario);
+                    break;
+                case 2:
+                    atualizarHistoricoMedico(leitura, medicoService, pacienteProntuario);
+                    break;
+                case 3:
+                    int idRemovido;
+                    System.out.print("Digite o id do prontuário a ser removido: ");
+                    idRemovido = leitura.nextInt();
+                    leitura.nextLine();
+                    medicoService.removerProntuario(medicoLogin, idRemovido);
+                    break;
+                case 4:
+                    int idProcurar;
+                    System.out.print("Digite o id do prontuário a ser procurado: ");
+                    idProcurar = leitura.nextInt();
+                    leitura.nextLine();
+                    medicoService.mostrarProntuario(medicoLogin, idProcurar);
+                    break;
+                case 5:
+                    medicoService.mostrarListaProntuarios(medicoLogin);
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+        } while (opcao != 0);
+    }
+    
+    private static void cadastrarProntuario(Scanner leitura, MedicoService medicoService, Medico medicoLogin, Paciente pacienteProntuario) {
+        System.out.print("Digite o id do novo prontuário: ");
+        int id = leitura.nextInt();
+        leitura.nextLine();
+        
+        if (!medicoService.verificarDisponibilidadeIdProntuario(medicoLogin, id)) {
+            System.out.println("O médico já possui um prontuário com esse ID");
+            return;
+        }
+        
         System.out.print("Digite a data do atendimento (ex: 04/06/2026): ");
-        Prontuario novoProntuario = new Prontuario(pacienteProntuario, medicoLogin, leitura.nextLine());
+        String data = leitura.nextLine();
+        
+        Prontuario novoProntuario = new Prontuario(pacienteProntuario, medicoLogin, data, id);
 
         System.out.println("Digite os sintomas relatados - digite 'fim' para parar: ");
-        while (true) {
+        String sintoma;
+        do {
             System.out.print("Sintoma: ");
-            String sintoma = leitura.nextLine();
-
-            if (sintoma.equalsIgnoreCase("fim")) {
-                break;
+            sintoma = leitura.nextLine();
+            if (!sintoma.equalsIgnoreCase("fim")) {
+                novoProntuario.adicionarSintoma(sintoma);
             }
-
-            novoProntuario.adicionarSintoma(sintoma);
-        }
+        } while (!sintoma.equalsIgnoreCase("fim"));
 
         System.out.print("Diagnóstico: ");
         novoProntuario.setDiagnostico(leitura.nextLine());
@@ -515,8 +573,82 @@ public class SaudeCia {
         novoProntuario.setPrescricao(leitura.nextLine());
 
         medicoService.registrarProntuario(novoProntuario);
-        System.out.println("Prontuário registrado com sucesso!");
+        System.out.println("Prontuário com id " + id + " cadastrado com sucesso!");
     }
+   
+    private static void atualizarProntuario(Scanner leitura, MedicoService medicoService, Medico medicoLogin, int id) {
+        System.out.println("\n--- Atualizar Prontuário com ID " + id + " ---");
+        
+        // Verifica se existe prontúario com o solicitado id:
+        // Se não tiver, fala que não existe o prontuário
+        Prontuario prontuario = medicoService.buscarProntuarioPorMedicoEId(medicoLogin, id);
+        if (prontuario == null){
+            System.out.println("O paciente não tem histórico médico");
+            return;
+        }
+        
+        int opcao;
+        
+        // Pergunta qual dado é para ser atualizado
+        do {
+            System.out.println("Qual dado deseja atualizar?");
+            System.out.println("1 - Sintomas");
+            System.out.println("2 - Diagnóstico");
+            System.out.println("3 - Preescrição");
+            System.out.println("0 - Cancelar atualização");
+            
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+            
+            if(opcao == 1) {
+                System.out.println("Deseja adicionar ou remover um sintoma?");
+                System.out.println("1 - Adicionar");
+                System.out.println("2 - Remover");
+                System.out.println("0 - Cancelar atualização de sintomas");
+                
+                int opcaoSintoma;
+                System.out.print("Escolha uma opção: ");
+                opcaoSintoma = leitura.nextInt();
+                leitura.nextLine();
+                if (opcaoSintoma == 0) {
+                    continue;
+                }
+                 
+                String sintoma;
+                
+                switch(opcaoSintoma) {
+                    case 1:
+                        System.out.print("Digite o sintoma a ser adicionado");
+                        sintoma = leitura.nextLine();
+                        medicoService.adicionarSintomaProntuario(prontuario, sintoma);
+                    case 2:
+                        System.out.print("Digite o sintoma a ser adicionado");
+                        sintoma = leitura.nextLine();
+                        medicoService.removerSintomaProntuario(prontuario, sintoma);
+                }
+            }
+            
+            switch (opcao) {
+                case 2:
+                    String diagnostico;
+                    System.out.print("Digite o diagnóstico");
+                    diagnostico = leitura.nextLine();
+                    medicoService.atualizarDiagnostico(prontuario, diagnostico);
+                    break;
+                case 3:
+                    String preescricao;
+                    System.out.print("Digite a preescrição");
+                    preescricao = leitura.nextLine();
+                    medicoService.atualizarPreescricao(prontuario, preescricao);
+                    break;
+            }
+        } while (opcao != 0);
+        
+        System.out.println("Prontuário com ID " + id + " atualizado com sucesso!");
+    }
+    
+    // ======================================
 
     private static void gerarRelatoriosMedicos(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         System.out.println("\n--- GERAR RELATÓRIOS MÉDICOS ---");
