@@ -14,6 +14,7 @@ public class Prontuario {
     private List<String> sintomas;
     private String diagnostico;
     private String prescricao;
+    private int id;
 
     /**
      * O Prontuário é criado com as variáveis imutáveis, que são o paciente, o
@@ -22,12 +23,13 @@ public class Prontuario {
      * @param paciente
      * @param medico
      * @param data
-     */
+    */
 
-    public Prontuario(Paciente paciente, Medico medico, String data) {
+    public Prontuario(Paciente paciente, Medico medico, String data, int id) {
         this.paciente = paciente;
         this.medico = medico;
         this.data = data;
+        this.id = id;
         this.sintomas = new ArrayList<>();
     }
 
@@ -42,6 +44,10 @@ public class Prontuario {
     public String getData() {
         return this.data;
     }
+    
+    public int getId(){
+        return this.id;
+    }
 
     public void adicionarSintoma(String sintoma) {
         this.sintomas.add(sintoma);
@@ -51,10 +57,13 @@ public class Prontuario {
         if (this.sintomas.contains(sintoma)) {
             this.sintomas.remove(sintoma);
         }
+        else {
+            System.out.println("Sintoma não encontrado no prontuário");
+        }
     }
 
     public List<String> getSintomas() {
-        return this.sintomas;
+        return new ArrayList<>(this.sintomas);
     }
 
     public String getDiagnostico() {

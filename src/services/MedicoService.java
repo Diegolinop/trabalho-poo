@@ -45,7 +45,7 @@ public class MedicoService {
     public List<Paciente> listarPacientes() {
         return pacienteRepository.buscarTodos();
     }
-
+     
     public Paciente buscarPacientePorCpf(String cpf) {
         return pacienteRepository.buscarPorCpf(cpf);
     }
@@ -133,38 +133,113 @@ public class MedicoService {
         
         System.out.println("\nCirurgias:");
         if (dados.getCirurgias().isEmpty()) {
-            System.out.println("  Nenhuma cirurgia registrada.");
+            System.out.println("Nenhuma cirurgia registrada.");
         } else {
             for (String cirurgia : dados.getCirurgias()) {
-                System.out.println("  - " + cirurgia);
+                System.out.println(" - " + cirurgia);
             }
         }
         System.out.println("\nAlergias:");
         if (dados.getAlergias().isEmpty()) {
-            System.out.println("  Nenhuma alergia registrada.");
+            System.out.println("Nenhuma alergia registrada.");
         } else {
             for (String alergia : dados.getAlergias()) {
-                System.out.println("  - " + alergia);
+                System.out.println(" - " + alergia);
             }
         }
         System.out.println("--------------------------------------");
     }
     
     // =======================================
+    
+    // PRONTUÁRIOS ===========================
+    
+    public Prontuario buscarProntuarioPorMedicoEId(Medico medico, int id) {
+        return prontuarioRepository.buscarPorMedicoEId(medico, id);
+    }
+    
+    public boolean verificarDisponibilidadeIdProntuario(Medico medico, int id) {
+        List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
+        
+        for (Prontuario prontuario : prontuarios) {
+           if (prontuario.getId() == id) {
+               return false;
+           }
+        }
+        return true;
+    }
 
     public void registrarProntuario(Prontuario prontuario) {
         prontuarioRepository.salvar(prontuario);
         prontuario.getMedico().getProntuarios().add(prontuario);
         prontuario.getPaciente().getProntuarios().add(prontuario);
     }
+    
+    public void removerSintomaProntuario(Prontuario prontuario, String sintoma) {
+        prontuario.removerSintoma(sintoma);
+    }
+    
+    public void adicionarSintomaProntuario(Prontuario prontuario, String sintoma) {
+        prontuario.adicionarSintoma(sintoma);
+    }
+    
+    public void atualizarDiagnostico(Prontuario prontuario, String diagnoistico) {
+        prontuario.setDiagnostico(diagnoistico);
+    }
+    
+    public void atualizarPreescricao(Prontuario prontuario, String preescricao) {
+        prontuario.setPrescricao(preescricao);
+    }
 
-    public void removerProntuario(Prontuario prontuario) {
+    public void removerProntuario(Medico medico, int id) {
+        Prontuario prontuario = buscarProntuarioPorMedicoEId(medico, id);
+        
         if (prontuarioRepository.remover(prontuario)) {
             prontuario.getMedico().getProntuarios().remove(prontuario);
             prontuario.getPaciente().getProntuarios().remove(prontuario);
         }
     }
+    
+    public void mostrarProntuario(Medico medico, int id) {
+        Prontuario prontuario = prontuarioRepository.buscarPorMedicoEId(medico, id);
+        if (prontuario == null) {
+            System.out.println("O médico não há prontuário com esse ID");
+            return;
+        }
+        
+        System.out.println("--- PRONTUÁRIO DO " + prontuario.getPaciente().getNomeCompleto() + " ---");
+        System.out.println("--- FEITO PELO MÉDICO " + medico.getNomeCompleto() + " ---");
+        
+        System.out.println("\nSintomas:");
+        if (prontuario.getSintomas().isEmpty()) {
+            System.out.println("Nenhum sintoma registrado.");
+        } else {
+            for (String sintoma : prontuario.getSintomas()) {
+                System.out.println(" - " + sintoma);
+            }
+        }
+        
+        System.out.println("--- Diagnóstco " + prontuario.getDiagnostico() + " ---");
+        System.out.println("--- Prescrição " + prontuario.getPrescricao() + " ---");
+    }
+    
+    public void mostrarListaProntuarios(Medico medico) {
+        List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
+        
+        if (prontuarios.isEmpty()) {
+            System.out.println("Nenhum prontuário encontrado.");
+            return;
+        }
+        
+        System.out.println("--- PRONTUÁRIOS DE " + medico.getNomeCompleto() + " ---");
+        for (Prontuario prontuario : prontuarios) {
+            System.out.println("ID: " + prontuario.getId() + " | Paciente: " + prontuario.getPaciente().getNomeCompleto() + " | Data: " + prontuario.getData());
+        }
+        System.out.println("--------------------------------------");
+    }
 
+    // ======================================= 
+    
     public List<Prontuario> gerarRelatorioAtendimentosMes(Medico medico, String mes) {
         return prontuarioRepository.buscarPorMedicoEMes(medico, mes);
     }
@@ -182,6 +257,13 @@ public class MedicoService {
     }
 
     public String gerarDeclaracaoAcompanhamento(Medico medico, Paciente paciente, String nomeAcompanhante, String dataAcompanhamento) {
-        return "---------------- DECLARAÇÃO DE ACOMPANHAMENTO ----------------\n" + "Declaro para os devidos fins que o(a) Sr(a). " + nomeAcompanhante + "\n" + "atuou como acompanhante do(a) paciente " + paciente.getNomeCompleto() + "\n" + "em consulta médica realizada no dia " + dataAcompanhamento + ".\n" + "------------------------------------------------------\n" + "Médico(a): " + medico.getNomeCompleto() + " | CRM: " + medico.getCrm() + "\n" + "------------------------------------------------------";
+        return """
+               ---------------- DECLARAÇÃO DE ACOMPANHAMENTO ----------------
+               Declaro para os devidos fins que o(a) Sr(a). """ 
+                + nomeAcompanhante + "\n" + "atuou como acompanhante do(a) paciente " 
+                + paciente.getNomeCompleto() + "\n" + "em consulta médica realizada no dia " 
+                + dataAcompanhamento + ".\n" + "------------------------------------------------------\n" 
+                + "Médico(a): " + medico.getNomeCompleto() + " | CRM: " + medico.getCrm() + "\n" 
+                + "------------------------------------------------------";
     }
 }

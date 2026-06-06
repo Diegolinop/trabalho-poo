@@ -26,4 +26,26 @@ public class ProntuarioRepository extends Repository<Prontuario> {
         }
         return resultado;
     }
+    
+    public List<Prontuario> buscarPorMedico(Medico medico) {
+        List<Prontuario> resultado = new ArrayList<>();
+        for (Prontuario prontuario : elementos) {
+            if (prontuario.getMedico().equals(medico)) {
+                resultado.add(prontuario);
+            }
+        }
+        return resultado;
+    }
+    
+    public Prontuario buscarPorMedicoEId(Medico medico, int id) {
+        Prontuario resultado;
+        for (Prontuario prontuario : elementos) {
+            if (prontuario.getMedico().equals(medico)
+                    && prontuario.getId() == id) {
+                resultado = prontuario;
+                return resultado;
+            }
+        }
+        return null;
+    }
 }
