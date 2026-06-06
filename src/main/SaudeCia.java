@@ -420,11 +420,30 @@ public class SaudeCia {
             if (opcao > 0 && opcao < 6) {
                 boolean valor;
                 
-                System.out.println("Paciente não encontrado.");
+                System.out.print("Informe o novo valor (true/false): ");
                 valor = leitura.nextBoolean();
                 leitura.nextLine();
-            
-                medicoService.atualizarHistoricoMedico(paciente, opcao, valor);
+
+                switch (opcao) {
+                    case 1:
+                        medicoService.atualizarFumaPaciente(paciente, valor);
+                        break;
+                    case 2:
+                        medicoService.atualizarBebePaciente(paciente, valor);
+                        break;
+                    case 3:
+                        medicoService.atualizarColesterolPaciente(paciente, valor);
+                        break;
+                    case 4:
+                        medicoService.atualizarDiabetePaciente(paciente, valor);
+                        break;
+                    case 5:
+                        medicoService.atualizarDoencaCardiacaPaciente(paciente, valor);
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
             }
             else if (opcao == 6) {
                 System.out.println("Deseja adicionar ou remover uma cirurgia do cadastro?");
