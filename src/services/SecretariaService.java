@@ -103,6 +103,22 @@ public class SecretariaService {
                 + " com Dr(a). " + novaConsulta.getMedico().getNomeCompleto() + " agendada com sucesso!");
     }
 
+    public void atualizarDataConsulta(Consulta consulta, String data) {
+        consulta.setData(data);
+    }
+
+    public void atualizarHorarioConsulta(Consulta consulta, String horario) {
+        consulta.setHorario(horario);
+    }
+
+    public void atualizarMedicoConsulta(Consulta consulta, Medico medico) {
+        consulta.setMedico(medico);
+    }
+
+    public void atualizarTipoConsulta(Consulta consulta, String tipo) {
+        consulta.setTipo(tipo);
+    }
+
     public void cancelarConsulta(Consulta consulta) {
         boolean removido = consultaRepository.remover(consulta);
 

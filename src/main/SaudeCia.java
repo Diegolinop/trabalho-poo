@@ -142,7 +142,8 @@ public class SaudeCia {
             System.out.println("3 - Remover Paciente");
             System.out.println("4 - Atualizar Paciente");
             System.out.println("5 - Agendar Consulta");
-            System.out.println("6 - Cancelar Consulta");
+            System.out.println("6 - Atualizar Consulta");
+            System.out.println("7 - Cancelar Consulta");
             System.out.println("0 - Voltar ao Menu Principal\n");
 
             System.out.print("Escolha uma opção: ");
@@ -168,6 +169,9 @@ public class SaudeCia {
                     agendarConsulta(leitura, secretariaService);
                     break;
                 case 6:
+                    atualizarConsulta(leitura, secretariaService);
+                    break;
+                case 7:
                     cancelarConsulta(leitura, secretariaService);
                     break;
                 case 0:
@@ -312,14 +316,13 @@ public class SaudeCia {
         secretariaService.agendarConsulta(novaConsulta);
     }
 
-    private static void cancelarConsulta(Scanner leitura, SecretariaService secretariaService) {
-        System.out.println("\n--- CANCELAR CONSULTA ---");
+    private static Consulta selecionarConsultaPaciente(Scanner leitura, SecretariaService secretariaService) {
         System.out.print("Digite o CPF do paciente para localizar a consulta: ");
         List<Consulta> consultasDoPaciente = secretariaService.buscarConsultasPorCpfPaciente(leitura.nextLine());
 
         if (consultasDoPaciente.isEmpty()) {
             System.out.println("Nenhuma consulta localizada para o CPF informado.");
-            return;
+            return null;
         }
 
         System.out.println("Consultas encontradas para este paciente:");
@@ -327,27 +330,96 @@ public class SaudeCia {
             Consulta consulta = consultasDoPaciente.get(i);
             System.out.println((i + 1) + " - Data: " + consulta.getData()
                     + " | Horário: " + consulta.getHorario()
-                    + " | Médico(a): " + consulta.getMedico().getNomeCompleto());
+                    + " | Médico(a): " + consulta.getMedico().getNomeCompleto()
+                    + " | Tipo: " + consulta.getTipo());
         }
 
-        int opcaoCancelar;
+        int opcaoConsulta;
         do {
-            System.out.print("\nDigite o número da consulta que deseja cancelar (ou 0 para desistir): ");
-            opcaoCancelar = leitura.nextInt();
+            System.out.print("\nDigite o número da consulta desejada (ou 0 para desistir): ");
+            opcaoConsulta = leitura.nextInt();
             leitura.nextLine();
 
-            if (opcaoCancelar == 0) {
+            if (opcaoConsulta == 0) {
                 System.out.println("Operação cancelada.");
-                return;
+                return null;
             }
 
-            if (opcaoCancelar > 0 && opcaoCancelar <= consultasDoPaciente.size()) {
-                secretariaService.cancelarConsulta(consultasDoPaciente.get(opcaoCancelar - 1));
-                return;
+            if (opcaoConsulta > 0 && opcaoConsulta <= consultasDoPaciente.size()) {
+                return consultasDoPaciente.get(opcaoConsulta - 1);
             }
 
             System.out.println("Opção inválida. Tente novamente.");
         } while (true);
+    }
+
+    private static void atualizarConsulta(Scanner leitura, SecretariaService secretariaService) {
+        System.out.println("\n--- ATUALIZAR CONSULTA ---");
+        Consulta consulta = selecionarConsultaPaciente(leitura, secretariaService);
+
+        if (consulta == null) {
+            return;
+        }
+
+        int opcao;
+
+        do {
+            System.out.println("\nQual dado deseja atualizar?");
+            System.out.println("1 - Data");
+            System.out.println("2 - Horário");
+            System.out.println("3 - Médico");
+            System.out.println("4 - Tipo da consulta");
+            System.out.println("0 - Cancelar atualização");
+
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("Nova data da consulta (dd/mm/aaaa): ");
+                    secretariaService.atualizarDataConsulta(consulta, leitura.nextLine());
+                    System.out.println("Consulta atualizada com sucesso.");
+                    break;
+                case 2:
+                    System.out.print("Novo horário: ");
+                    secretariaService.atualizarHorarioConsulta(consulta, leitura.nextLine());
+                    System.out.println("Consulta atualizada com sucesso.");
+                    break;
+                case 3:
+                    System.out.print("CRM do novo médico: ");
+                    Medico medico = secretariaService.buscarMedicoPorCrm(leitura.nextLine());
+
+                    if (medico == null) {
+                        System.out.println("Médico com CRM informado não foi localizado.");
+                        break;
+                    }
+
+                    secretariaService.atualizarMedicoConsulta(consulta, medico);
+                    System.out.println("Consulta atualizada com sucesso.");
+                    break;
+                case 4:
+                    System.out.print("Novo tipo da consulta (Normal / Retorno): ");
+                    secretariaService.atualizarTipoConsulta(consulta, leitura.nextLine());
+                    System.out.println("Consulta atualizada com sucesso.");
+                    break;
+                case 0:
+                    System.out.println("Operação cancelada.");
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+        } while (opcao != 0);
+    }
+
+    private static void cancelarConsulta(Scanner leitura, SecretariaService secretariaService) {
+        System.out.println("\n--- CANCELAR CONSULTA ---");
+        Consulta consulta = selecionarConsultaPaciente(leitura, secretariaService);
+
+        if (consulta != null) {
+            secretariaService.cancelarConsulta(consulta);
+        }
     }
     
     // HISTÓRICO MÉDICO ======================
