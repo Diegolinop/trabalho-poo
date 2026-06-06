@@ -49,26 +49,49 @@ public class MedicoService {
     public Paciente buscarPacientePorCpf(String cpf) {
         return pacienteRepository.buscarPorCpf(cpf);
     }
+    
+    // HISTÓRICO MÉDICO ========================== 
 
     public boolean verificarHistoricoMedico(Paciente paciente) {
         return paciente.getHistoricoMedico() != null;
     }
 
-    public void cadastrarHistoricoMedico(Paciente paciente) {
+    public void cadastrarHistoricoMedico(Paciente paciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabete, boolean doencaCardiaca) {
         if (!verificarHistoricoMedico(paciente)) {
             paciente.setHistoricoMedico(new HistoricoMedico());
         }
-    }
-
-    public void atualizarHistoricoMedico(Paciente paciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabete, boolean doencaCardiaca) {
-        cadastrarHistoricoMedico(paciente);
-
+        
         HistoricoMedico dados = paciente.getHistoricoMedico();
         dados.setFuma(fuma);
         dados.setBebe(bebe);
         dados.setColesterol(colesterol);
         dados.setDiabete(diabete);
         dados.setDoencaCardiaca(doencaCardiaca);
+    }
+
+    public void atualizarHistoricoMedico(Paciente paciente, int opcao, boolean valor) {
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        
+        switch (opcao) {
+            case 1:
+                dados.setFuma(valor);
+                break;
+            case 2:
+                dados.setBebe(valor);
+                break;
+            case 3:
+                dados.setColesterol(valor);
+                break;
+            case 4:
+                dados.setDiabete(valor);
+                break;
+            case 5:
+                dados.setDoencaCardiaca(valor);
+                break;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+                break;
+        }
     }
 
     public void removerHistoricoMedico(Paciente paciente) {
@@ -78,26 +101,56 @@ public class MedicoService {
     }
 
     public void adicionarCirurgiaPaciente(Paciente paciente, String cirurgia) {
-        cadastrarHistoricoMedico(paciente);
         paciente.getHistoricoMedico().adicionarCirurgia(cirurgia);
     }
 
     public void removerCirurgiaPaciente(Paciente paciente, String cirurgia) {
-        if (verificarHistoricoMedico(paciente)) {
-            paciente.getHistoricoMedico().removerCirurgia(cirurgia);
-        }
+        paciente.getHistoricoMedico().removerCirurgia(cirurgia);
     }
 
     public void adicionarAlergiaPaciente(Paciente paciente, String alergia) {
-        cadastrarHistoricoMedico(paciente);
         paciente.getHistoricoMedico().adicionarAlergia(alergia);
     }
 
     public void removerAlergiaPaciente(Paciente paciente, String alergia) {
-        if (verificarHistoricoMedico(paciente)) {
-            paciente.getHistoricoMedico().removerAlergia(alergia);
-        }
+        paciente.getHistoricoMedico().removerAlergia(alergia);
     }
+    
+    public void mostrarHistoricoMedico(Paciente paciente) {
+        if (!verificarHistoricoMedico(paciente)) {
+            System.out.println("Este paciente não possui histórico médico cadastrado.");
+            return;
+        }
+        
+        HistoricoMedico dados = paciente.getHistoricoMedico();
+        
+        System.out.println("--- HISTÓRICO MÉDICO DE " + paciente.getNomeCompleto() + " ---");
+        System.out.println("Fuma: " + (dados.getFuma() ? "Sim" : "Não"));
+        System.out.println("Bebe: " + (dados.getBebe() ? "Sim" : "Não"));
+        System.out.println("Colesterol alto: " + (dados.getColesterol() ? "Sim" : "Não"));
+        System.out.println("Diabete: " + (dados.getDiabete() ? "Sim" : "Não"));
+        System.out.println("Doença cardíaca: " + (dados.getDoencaCardiaca() ? "Sim" : "Não"));
+        
+        System.out.println("\nCirurgias:");
+        if (dados.getCirurgias().isEmpty()) {
+            System.out.println("  Nenhuma cirurgia registrada.");
+        } else {
+            for (String cirurgia : dados.getCirurgias()) {
+                System.out.println("  - " + cirurgia);
+            }
+        }
+        System.out.println("\nAlergias:");
+        if (dados.getAlergias().isEmpty()) {
+            System.out.println("  Nenhuma alergia registrada.");
+        } else {
+            for (String alergia : dados.getAlergias()) {
+                System.out.println("  - " + alergia);
+            }
+        }
+        System.out.println("--------------------------------------");
+    }
+    
+    // =======================================
 
     public void registrarProntuario(Prontuario prontuario) {
         prontuarioRepository.salvar(prontuario);

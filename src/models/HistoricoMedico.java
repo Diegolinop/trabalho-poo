@@ -69,6 +69,8 @@ public class HistoricoMedico {
     public void removerCirurgia(String cirurgia) {
         if (this.cirurgias.contains(cirurgia)) {
             this.cirurgias.remove(cirurgia);
+        } else {
+            System.out.println("Cirurgia não encontrada");
         }
     }
 
@@ -85,6 +87,7 @@ public class HistoricoMedico {
         if (this.alergias.contains(alergia)) {
             this.alergias.remove(alergia);
         }
+        System.out.println("Alergia não encontrada");
     }
 
     public List<String> getAlergias() {
