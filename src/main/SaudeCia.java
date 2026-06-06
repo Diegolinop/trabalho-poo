@@ -107,7 +107,7 @@ public class SaudeCia {
             System.out.print("Escolha uma opção: ");
             opcao = leitura.nextInt();
             leitura.nextLine();
-
+            
             switch (opcao) {
                 case 1:
                     listarPacientes(medicoService.listarPacientes());
@@ -180,7 +180,7 @@ public class SaudeCia {
         System.out.println("\n--- CADASTRAR PACIENTE ---");
         System.out.print("CPF: ");
         String cpf = leitura.nextLine();
-        System.out.print("Nome: ");
+        System.out.print("Primeiro nome: ");
         String nome = leitura.nextLine();
         System.out.print("Sobrenome: ");
         String sobrenome = leitura.nextLine();
@@ -281,17 +281,67 @@ public class SaudeCia {
             System.out.println("Opção inválida. Tente novamente.");
         } while (true);
     }
+    
+    // HISTÓRICO MÉDICO ======================
 
     private static void gerenciarHistoricoMedico(Scanner leitura, MedicoService medicoService) {
-        System.out.println("\n--- GERENCIAR HISTÓRICO MÉDICO ---");
+        System.out.println("\n--- Gerenciar Histórico Médico ---");
         System.out.print("Digite o CPF do paciente: ");
         Paciente pacienteBuscado = medicoService.buscarPacientePorCpf(leitura.nextLine());
-
+        
         if (pacienteBuscado == null) {
-            System.out.println("Paciente não encontrado.");
+            System.out.println("Não foi encontrado paciente registrado com o cpf digitado");
             return;
         }
+        
+        int opcao;
 
+        do {
+            System.out.println("1 - Cadastrar histórico médico");
+            System.out.println("2 - Atualizar histórico médico");
+            System.out.println("3 - Remover histórico médico");
+            System.out.println("4 - Mostrar histórico médico");
+
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+            
+            switch (opcao) {
+                case 1:
+                    cadastrarHistoricoMedico(leitura, medicoService, pacienteBuscado);
+                    break;
+                case 2:
+                    atualizarHistoricoMedico(leitura, medicoService, pacienteBuscado);
+                    break;
+                case 3:
+                    medicoService.removerHistoricoMedico(pacienteBuscado);
+                    break;
+                case 4:
+                    medicoService.mostrarHistoricoMedico(pacienteBuscado);
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+        } while (opcao != 0);
+    }
+    
+    private static void cadastrarHistoricoMedico(Scanner leitura, MedicoService medicoService, Paciente paciente) {
+        System.out.println("\n--- Cadastrar Histórico Médico ---");
+        
+        // Verifica se o paciente já tem histórico médico:
+        // Se tiver, pede se quer sobreescrever ele
+        if (medicoService.verificarHistoricoMedico(paciente)){
+            boolean valor;
+                
+            System.out.println("O paciente já apresenta um cadastro médico, deseja sobreescreve-lo? (true/false");
+            valor = leitura.nextBoolean();
+            leitura.nextLine();
+            
+            if (!valor) return;
+        }
+        
+        // Pega os dados para o cadastro
         System.out.println("O paciente fuma? (true/false): ");
         boolean fuma = leitura.nextBoolean();
         System.out.println("O paciente bebe? (true/false): ");
@@ -303,11 +353,137 @@ public class SaudeCia {
         System.out.print("O paciente tem doença cardíaca? (true/false): ");
         boolean doencaCardiaca = leitura.nextBoolean();
         leitura.nextLine();
+        
+        // Cadastra a lista de cirurgias no hisórico
+        String cirurgia;
+        System.out.println("Digite as cirurgias - digite 'fim' para parar: ");
+        do {
+            System.out.print("Cirurgias: ");
+            cirurgia = leitura.nextLine();
 
-        medicoService.atualizarHistoricoMedico(pacienteBuscado, fuma, bebe, colesterol, diabete, doencaCardiaca);
-        System.out.println("Dados de saúde do paciente " + pacienteBuscado.getNomeCompleto() + " atualizados com sucesso!");
+            if (cirurgia.equalsIgnoreCase("fim")) {
+                break;
+            }
+
+            medicoService.adicionarCirurgiaPaciente(paciente, cirurgia);
+        } while (cirurgia.equalsIgnoreCase("fim"));
+        
+        // Cadastra a lista de alergias no hisórico
+        String alergia;
+        System.out.println("Digite as alergias - digite 'fim' para parar: ");
+        do {
+            System.out.print("Alergias: ");
+            alergia = leitura.nextLine();
+
+            if (alergia.equalsIgnoreCase("fim")) {
+                break;
+            }
+
+            medicoService.adicionarAlergiaPaciente(paciente, alergia);
+        } while (alergia.equalsIgnoreCase("fim"));
+        
+        // Cadastra o histórico médico
+        medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabete, doencaCardiaca);
+        System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " cadastrados com sucesso!\n");
     }
-
+    
+    private static void atualizarHistoricoMedico(Scanner leitura, MedicoService medicoService, Paciente paciente) {
+        System.out.println("\n--- Atualizar Histórico Médico ---");
+        
+        // Verifica se o paciente já tem histórico médico:
+        // Se não tiver, fala que não é possível atualizar sem ter
+        if (!medicoService.verificarHistoricoMedico(paciente)){
+            System.out.println("O paciente não tem histórico médico");
+            return;
+        }
+        
+        int opcao;
+        
+        // Pergunta qual dado é para ser atualizado
+        do {
+            System.out.println("Qual dado deseja atualizar?");
+            System.out.println("1 - Fuma");
+            System.out.println("2 - Bebe");
+            System.out.println("3 - Colesterol alto");
+            System.out.println("4 - Diabete");
+            System.out.println("5 - Doença cardíaca");
+            System.out.println("6 - Cirurgias");
+            System.out.println("7 - Alergias");
+            System.out.println("0 - Cancelar atualização");
+            
+            System.out.print("Escolha uma opção: ");
+            opcao = leitura.nextInt();
+            leitura.nextLine();
+            
+            // Se não for a lista de cirurgias ou alergias, nem cancelar:
+            // Pede o valor booleano e atualiza o histórico
+            if (opcao > 0 && opcao < 6) {
+                boolean valor;
+                
+                System.out.println("Paciente não encontrado.");
+                valor = leitura.nextBoolean();
+                leitura.nextLine();
+            
+                medicoService.atualizarHistoricoMedico(paciente, opcao, valor);
+            }
+            else if (opcao == 6) {
+                System.out.println("Deseja adicionar ou remover uma cirurgia do cadastro?");
+                System.out.println("1 - Adicionar");
+                System.out.println("2 - Remover");
+                
+                System.out.print("Escolha uma opção: ");
+                opcao = leitura.nextInt();
+                leitura.nextLine();
+                
+                switch (opcao) {
+                    case 1:
+                        System.out.println("Digite o nome da cirurgia a ser adicionada: ");
+                        String cirurgiaAdicionada = leitura.nextLine();
+                        medicoService.adicionarCirurgiaPaciente(paciente, cirurgiaAdicionada);
+                        break;
+                    case 2:
+                        System.out.println("Digite o nome da cirurgia a ser adicionada: ");
+                        String cirurgiaRemovida = leitura.nextLine();
+                        medicoService.adicionarCirurgiaPaciente(paciente, cirurgiaRemovida);
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
+            }
+            else if (opcao == 7) {
+                System.out.println("Deseja adicionar ou remover uma alergia do cadastro?");
+                System.out.println("1 - Adicionar");
+                System.out.println("2 - Remover");
+                
+                System.out.print("Escolha uma opção: ");
+                opcao = leitura.nextInt();
+                leitura.nextLine();
+                
+                switch (opcao) {
+                    case 1:
+                        System.out.println("Digite o nome da alergia a ser adicionada: ");
+                        String alergiaAdicionada = leitura.nextLine();
+                        medicoService.adicionarAlergiaPaciente(paciente, alergiaAdicionada);
+                        break;
+                    case 2:
+                        System.out.println("Digite o nome da alergia a ser adicionada: ");
+                        String alergiaRemovida = leitura.nextLine();
+                        medicoService.adicionarAlergiaPaciente(paciente, alergiaRemovida);
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
+            }
+            
+        } while (opcao != 0);
+       
+        System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " atualizados com sucesso!");
+    }
+    
+    // ==================================
+    
     private static void gerenciarProntuarios(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         System.out.println("\n--- GERENCIAR PRONTUÁRIOS ---");
         System.out.print("Digite o CPF do paciente: ");
