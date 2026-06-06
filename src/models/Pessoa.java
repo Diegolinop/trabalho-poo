@@ -1,4 +1,4 @@
-package entidades;
+package models;
 
 /**
  * Classe abstrata que representa uma pessoa no sistema.
@@ -8,21 +8,22 @@ public abstract class Pessoa {
     private String cpf;
     private String nome;
     private String sobrenome;
-    
+
     private String telefone;
     private String email;
-    
+
     private String endereco;
-    
-    public Pessoa() {}
+
+    public Pessoa() {
+    }
 
     /**
-     * 
+     *
      * @param cpf
      * @param nome
      * @param sobrenome
      * @param telefone
-     * @param endereco 
+     * @param endereco
      */
     public Pessoa(String cpf, String nome, String sobrenome, String telefone, String email, String endereco) {
         this.cpf = cpf;
@@ -40,6 +41,7 @@ public abstract class Pessoa {
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -47,6 +49,7 @@ public abstract class Pessoa {
     public String getSobrenome() {
         return sobrenome;
     }
+
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
     }
@@ -54,26 +57,30 @@ public abstract class Pessoa {
     public String getTelefone() {
         return telefone;
     }
+
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
+
     public String getEmail() {
         return this.email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getEndereco() {
         return endereco;
     }
+
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-    
+
     /**
      * Retorna o nome completo da pessoa.
+     *
      * @return nome + sobrenome
      */
     public String getNomeCompleto() {
