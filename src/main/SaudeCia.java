@@ -520,14 +520,7 @@ public class SaudeCia {
 
     private static void gerarRelatoriosMedicos(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         System.out.println("\n--- GERAR RELATÓRIOS MÉDICOS ---");
-        System.out.print("Digite o CPF do paciente para os relatórios (ou deixe em branco para 'atendidos no mês'): ");
-        String cpfRelatorio = leitura.nextLine();
-
-        Paciente pacienteRelatorio = null;
-        if (!cpfRelatorio.isBlank()) {
-            pacienteRelatorio = medicoService.buscarPacientePorCpf(cpfRelatorio);
-        }
-
+        
         System.out.println("1 - Receita");
         System.out.println("2 - Atestado");
         System.out.println("3 - Declaração de Acompanhamento");
@@ -536,30 +529,46 @@ public class SaudeCia {
         int opcaoRelatorio = leitura.nextInt();
         leitura.nextLine();
 
-        if (opcaoRelatorio >= 1 && opcaoRelatorio <= 3 && pacienteRelatorio == null) {
-            System.out.println("Erro: Para este relatório, o paciente precisa ser encontrado.");
-            return;
-        }
-
         switch (opcaoRelatorio) {
             case 1:
+                System.out.print("Digite o CPF do paciente para receita: ");
+                String cpfReceita = leitura.nextLine();
+                Paciente pacienteReceita = medicoService.buscarPacientePorCpf(cpfReceita);
+                if (pacienteReceita == null) {
+                    System.out.println("Não foi encontrado paciente com o cpf digitado");
+                    break;
+                }
                 System.out.print("Digite a prescrição para imprimir na receita: ");
-                System.out.println("\n" + medicoService.gerarReceita(medicoLogin, pacienteRelatorio, leitura.nextLine()));
+                System.out.println("\n" + medicoService.gerarReceita(medicoLogin, pacienteReceita, leitura.nextLine()));
                 break;
             case 2:
+                System.out.print("Digite o CPF do paciente para o atestado: ");
+                String cpfRAtestado = leitura.nextLine();
+                Paciente pacienteAtestado = medicoService.buscarPacientePorCpf(cpfRAtestado);
+                if (pacienteAtestado == null) {
+                    System.out.println("Não foi encontrado paciente com o cpf digitado");
+                    break;
+                }
                 System.out.print("Dias de repouso: ");
                 int dias = leitura.nextInt();
                 leitura.nextLine();
                 System.out.print("Motivo/CID: ");
-                System.out.println("\n" + medicoService.gerarAtestado(medicoLogin, pacienteRelatorio, dias, leitura.nextLine()));
+                System.out.println("\n" + medicoService.gerarAtestado(medicoLogin, pacienteAtestado, dias, leitura.nextLine()));
                 break;
             case 3:
+                System.out.print("Digite o CPF do paciente para realizar a declaração de acompanhante: ");
+                String cpfAcompanhado = leitura.nextLine();
+                Paciente pacienteAcompanhado = medicoService.buscarPacientePorCpf(cpfAcompanhado);
+                if (pacienteAcompanhado == null) {
+                    System.out.println("Não foi encontrado paciente com o cpf digitado");
+                    break;
+                }
                 System.out.print("Nome do acompanhante: ");
                 String nomeAcompanhante = leitura.nextLine();
                 System.out.print("Data da consulta: ");
                 String dataConsulta = leitura.nextLine();
                 System.out.println("\n" + medicoService.gerarDeclaracaoAcompanhamento(
-                        medicoLogin, pacienteRelatorio, nomeAcompanhante, dataConsulta));
+                        medicoLogin, pacienteAcompanhado, nomeAcompanhante, dataConsulta));
                 break;
             case 4:
                 imprimirAtendimentosMes(leitura, medicoService, medicoLogin);
