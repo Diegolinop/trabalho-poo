@@ -22,6 +22,14 @@ public class MenuSecretaria {
     }
 
     public void exibir() {
+        System.out.println("\nInsira a matrícula da secretária para obter acesso ao sistema: ");
+        String matriculaSecretaria = leitura.nextLine();
+
+        Secretaria secretariaLogin = secretariaService.buscarSecretariaPorMatricula(matriculaSecretaria);
+        if (secretariaLogin == null) {
+            return;
+        }
+        
         int opcao;
 
         do {

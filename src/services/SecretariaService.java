@@ -7,10 +7,12 @@ package services;
 import java.util.List;
 
 import models.Consulta;
+import models.Secretaria;
 import models.Medico;
 import models.Paciente;
 import repositories.ConsultaRepository;
 import repositories.MedicoRepository;
+import repositories.SecretariaRepository;
 import repositories.PacienteRepository;
 
 /**
@@ -22,12 +24,26 @@ public class SecretariaService {
     private PacienteRepository pacienteRepository;
     private ConsultaRepository consultaRepository;
     private MedicoRepository medicoRepository;
+    private SecretariaRepository secretariaRepository;
 
     public SecretariaService(PacienteRepository pacienteRepository, ConsultaRepository consultaRepository,
-                             MedicoRepository medicoRepository) {
+                             MedicoRepository medicoRepository, SecretariaRepository secretariaRepository) {
         this.pacienteRepository = pacienteRepository;
         this.consultaRepository = consultaRepository;
         this.medicoRepository = medicoRepository;
+        this.secretariaRepository = secretariaRepository;
+    }
+    
+    public Secretaria buscarSecretariaPorMatricula(String matricula) {
+        Secretaria secretaria = secretariaRepository.buscarPorMatricula(matricula);
+        if (secretaria == null) {
+            System.out.println("Insira uma matrícula válido para entrar no sistema (Ex.: SEC-XXX)");
+        }
+        return secretaria;
+    }
+    
+    public void cadastrarSecretaria(Secretaria secretaria) {
+        secretariaRepository.salvar(secretaria);
     }
 
     public void cadastrarPaciente(Paciente novoPaciente) {
