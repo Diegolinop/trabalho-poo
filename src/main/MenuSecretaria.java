@@ -22,6 +22,14 @@ public class MenuSecretaria {
     }
 
     public void exibir() {
+        System.out.println("\nInsira a matrícula da secretária para obter acesso ao sistema: ");
+        String matriculaSecretaria = leitura.nextLine();
+
+        Secretaria secretariaLogin = secretariaService.buscarSecretariaPorMatricula(matriculaSecretaria);
+        if (secretariaLogin == null) {
+            return;
+        }
+        
         int opcao;
 
         do {
@@ -97,9 +105,13 @@ public class MenuSecretaria {
         String tipoConvenio = leitura.nextLine();
         System.out.print("Data de Nascimento (dd/mm/aaaa): ");
         String dataNascimento = leitura.nextLine();
-
-        Paciente novoPaciente = new Paciente(cpf, nome, sobrenome, telefone, email, endereco, tipoConvenio, dataNascimento);
-        secretariaService.cadastrarPaciente(novoPaciente);
+        
+        try {
+            Paciente novoPaciente = new Paciente(cpf, nome, sobrenome, telefone, email, endereco, tipoConvenio, dataNascimento);
+            secretariaService.cadastrarPaciente(novoPaciente);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void listarPacientes(List<Paciente> pacientes) {

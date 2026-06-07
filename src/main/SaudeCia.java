@@ -4,13 +4,8 @@ import java.util.Scanner;
 
 import models.Medico;
 import models.Secretaria;
-import repositories.ConsultaRepository;
-import repositories.MedicoRepository;
-import repositories.PacienteRepository;
-import repositories.ProntuarioRepository;
-import services.GerenciadorMensagensService;
-import services.MedicoService;
-import services.SecretariaService;
+import repositories.*;
+import services.*;
 
 public class SaudeCia {
 
@@ -18,9 +13,10 @@ public class SaudeCia {
         PacienteRepository pacienteRepository = new PacienteRepository();
         ConsultaRepository consultaRepository = new ConsultaRepository();
         MedicoRepository medicoRepository = new MedicoRepository();
+        SecretariaRepository secretariaRepository = new SecretariaRepository();
         ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
 
-        SecretariaService secretariaService = new SecretariaService(pacienteRepository, consultaRepository, medicoRepository);
+        SecretariaService secretariaService = new SecretariaService(pacienteRepository, consultaRepository, medicoRepository, secretariaRepository);
         MedicoService medicoService = new MedicoService(medicoRepository, prontuarioRepository, pacienteRepository);
         GerenciadorMensagensService gerenciadorMensagensService = new GerenciadorMensagensService(consultaRepository);
 
@@ -46,6 +42,7 @@ public class SaudeCia {
         );
 
         medicoService.cadastrarMedico(medicoNovo);
+        secretariaService.cadastrarSecretaria(secretaria);
 
         Scanner leitura = new Scanner(System.in);
         MenuPrincipal menuPrincipal = new MenuPrincipal(

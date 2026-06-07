@@ -7,10 +7,12 @@ package services;
 import java.util.List;
 
 import models.Consulta;
+import models.Secretaria;
 import models.Medico;
 import models.Paciente;
 import repositories.ConsultaRepository;
 import repositories.MedicoRepository;
+import repositories.SecretariaRepository;
 import repositories.PacienteRepository;
 
 /**
@@ -22,15 +24,40 @@ public class SecretariaService {
     private PacienteRepository pacienteRepository;
     private ConsultaRepository consultaRepository;
     private MedicoRepository medicoRepository;
+    private SecretariaRepository secretariaRepository;
 
     public SecretariaService(PacienteRepository pacienteRepository, ConsultaRepository consultaRepository,
-                             MedicoRepository medicoRepository) {
+                             MedicoRepository medicoRepository, SecretariaRepository secretariaRepository) {
         this.pacienteRepository = pacienteRepository;
         this.consultaRepository = consultaRepository;
         this.medicoRepository = medicoRepository;
+        this.secretariaRepository = secretariaRepository;
     }
-
+    
+    public Secretaria buscarSecretariaPorMatricula(String matricula) {
+        Secretaria secretaria = secretariaRepository.buscarPorMatricula(matricula);
+        if (secretaria == null) {
+            System.out.println("Insira uma matrícula válido para entrar no sistema (Ex.: SEC-XXX)");
+        }
+        return secretaria;
+    }
+    
+    public void cadastrarSecretaria(Secretaria secretaria) {
+        secretariaRepository.salvar(secretaria);
+    }
+    
+    private boolean cpfJaCadastrado(String cpf) {
+        return pacienteRepository.buscarPorCpf(cpf) != null
+            || medicoRepository.buscarPorCpf(cpf) != null
+            || secretariaRepository.buscarPorCpf(cpf) != null;
+    }
+    
     public void cadastrarPaciente(Paciente novoPaciente) {
+        if (cpfJaCadastrado(novoPaciente.getCpf())) {
+            System.out.println("\nErro: Já existe uma pessoa cadastrada com o CPF " + novoPaciente.getCpf());
+            return;
+        }
+        
         pacienteRepository.salvar(novoPaciente);
         System.out.println("Paciente cadastrado com sucesso!");
     }
