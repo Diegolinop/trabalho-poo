@@ -61,37 +61,37 @@ public class MedicoService {
             paciente.setHistoricoMedico(new HistoricoMedico());
         }
         
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setFuma(fuma);
-        dados.setBebe(bebe);
-        dados.setColesterol(colesterol);
-        dados.setDiabete(diabete);
-        dados.setDoencaCardiaca(doencaCardiaca);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setFuma(fuma);
+        historicoMedico.setBebe(bebe);
+        historicoMedico.setColesterol(colesterol);
+        historicoMedico.setDiabete(diabete);
+        historicoMedico.setDoencaCardiaca(doencaCardiaca);
     }
 
     public void atualizarFumaPaciente(Paciente paciente, boolean fuma) {
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setFuma(fuma);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setFuma(fuma);
     }
 
     public void atualizarBebePaciente(Paciente paciente, boolean bebe) {
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setBebe(bebe);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setBebe(bebe);
     }
 
     public void atualizarColesterolPaciente(Paciente paciente, boolean colesterol) {
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setColesterol(colesterol);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setColesterol(colesterol);
     }
 
     public void atualizarDiabetePaciente(Paciente paciente, boolean diabete) {
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setDiabete(diabete);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setDiabete(diabete);
     }
 
     public void atualizarDoencaCardiacaPaciente(Paciente paciente, boolean doencaCardiaca) {
-        HistoricoMedico dados = paciente.getHistoricoMedico();
-        dados.setDoencaCardiaca(doencaCardiaca);
+        HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
+        historicoMedico.setDoencaCardiaca(doencaCardiaca);
     }
 
     public void removerHistoricoMedico(Paciente paciente) {

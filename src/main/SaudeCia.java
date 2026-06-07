@@ -370,6 +370,7 @@ public class SaudeCia {
             System.out.println("2 - Atualizar histórico médico");
             System.out.println("3 - Remover histórico médico");
             System.out.println("4 - Mostrar histórico médico");
+            System.out.println("0 - Voltar");
 
             System.out.print("Escolha uma opção: ");
             opcao = leitura.nextInt();
@@ -424,32 +425,26 @@ public class SaudeCia {
         leitura.nextLine();
         
         // Cadastra a lista de cirurgias no hisórico
-        String cirurgia;
         System.out.println("Digite as cirurgias - digite 'fim' para parar: ");
+        String cirurgia;
         do {
-            System.out.print("Cirurgias: ");
+            System.out.print("Cirurgia: ");
             cirurgia = leitura.nextLine();
-
-            if (cirurgia.equalsIgnoreCase("fim")) {
-                break;
+            if (!cirurgia.equalsIgnoreCase("fim")) {
+                medicoService.adicionarCirurgiaPaciente(paciente, cirurgia);
             }
+        } while (!cirurgia.equalsIgnoreCase("fim"));
 
-            medicoService.adicionarCirurgiaPaciente(paciente, cirurgia);
-        } while (cirurgia.equalsIgnoreCase("fim"));
-        
         // Cadastra a lista de alergias no hisórico
-        String alergia;
         System.out.println("Digite as alergias - digite 'fim' para parar: ");
+        String alergia;
         do {
-            System.out.print("Alergias: ");
+            System.out.print("Alergia: ");
             alergia = leitura.nextLine();
-
-            if (alergia.equalsIgnoreCase("fim")) {
-                break;
+            if (!alergia.equalsIgnoreCase("fim")) {
+                medicoService.adicionarAlergiaPaciente(paciente, alergia);
             }
-
-            medicoService.adicionarAlergiaPaciente(paciente, alergia);
-        } while (alergia.equalsIgnoreCase("fim"));
+        } while (!alergia.equalsIgnoreCase("fim"));
         
         // Cadastra o histórico médico
         medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabete, doencaCardiaca);
@@ -518,21 +513,22 @@ public class SaudeCia {
                 System.out.println("Deseja adicionar ou remover uma cirurgia do cadastro?");
                 System.out.println("1 - Adicionar");
                 System.out.println("2 - Remover");
-                
+                System.out.println("0 - Voltar");
+
                 System.out.print("Escolha uma opção: ");
-                opcao = leitura.nextInt();
+                int opcaoCirurgia = leitura.nextInt(); // variável separada, não sobrescreve opcao
                 leitura.nextLine();
-                
-                switch (opcao) {
+
+                switch (opcaoCirurgia) {
                     case 1:
-                        System.out.println("Digite o nome da cirurgia a ser adicionada: ");
-                        String cirurgiaAdicionada = leitura.nextLine();
-                        medicoService.adicionarCirurgiaPaciente(paciente, cirurgiaAdicionada);
+                        System.out.print("Digite o nome da cirurgia a ser adicionada: ");
+                        medicoService.adicionarCirurgiaPaciente(paciente, leitura.nextLine());
                         break;
                     case 2:
-                        System.out.println("Digite o nome da cirurgia a ser adicionada: ");
-                        String cirurgiaRemovida = leitura.nextLine();
-                        medicoService.removerCirurgiaPaciente(paciente, cirurgiaRemovida);
+                        System.out.print("Digite o nome da cirurgia a ser removida: ");
+                        medicoService.removerCirurgiaPaciente(paciente, leitura.nextLine());
+                        break;
+                    case 0:
                         break;
                     default:
                         System.out.println("Opção inválida! Tente novamente.");
@@ -543,21 +539,22 @@ public class SaudeCia {
                 System.out.println("Deseja adicionar ou remover uma alergia do cadastro?");
                 System.out.println("1 - Adicionar");
                 System.out.println("2 - Remover");
-                
+                System.out.println("0 - Voltar");
+
                 System.out.print("Escolha uma opção: ");
-                opcao = leitura.nextInt();
+                int opcaoAlergia = leitura.nextInt(); // variável separada
                 leitura.nextLine();
-                
-                switch (opcao) {
+
+                switch (opcaoAlergia) {
                     case 1:
-                        System.out.println("Digite o nome da alergia a ser adicionada: ");
-                        String alergiaAdicionada = leitura.nextLine();
-                        medicoService.adicionarAlergiaPaciente(paciente, alergiaAdicionada);
+                        System.out.print("Digite o nome da alergia a ser adicionada: ");
+                        medicoService.adicionarAlergiaPaciente(paciente, leitura.nextLine());
                         break;
                     case 2:
-                        System.out.println("Digite o nome da alergia a ser adicionada: ");
-                        String alergiaRemovida = leitura.nextLine();
-                        medicoService.removerAlergiaPaciente(paciente, alergiaRemovida);
+                        System.out.print("Digite o nome da alergia a ser removida: ");
+                        medicoService.removerAlergiaPaciente(paciente, leitura.nextLine());
+                        break;
+                    case 0:
                         break;
                     default:
                         System.out.println("Opção inválida! Tente novamente.");
@@ -603,7 +600,11 @@ public class SaudeCia {
                     cadastrarProntuario(leitura, medicoService, medicoLogin, pacienteProntuario);
                     break;
                 case 2:
-                    atualizarHistoricoMedico(leitura, medicoService, pacienteProntuario);
+                    int idAtualizar;
+                    System.out.print("Digite o id do prontuário a ser atualizado: ");
+                    idAtualizar = leitura.nextInt();
+                    leitura.nextLine();
+                    atualizarProntuario(leitura, medicoService, medicoLogin, idAtualizar);
                     break;
                 case 3:
                     int idRemovido;
@@ -709,10 +710,12 @@ public class SaudeCia {
                         System.out.print("Digite o sintoma a ser adicionado");
                         sintoma = leitura.nextLine();
                         medicoService.adicionarSintomaProntuario(prontuario, sintoma);
+                        break;
                     case 2:
                         System.out.print("Digite o sintoma a ser adicionado");
                         sintoma = leitura.nextLine();
                         medicoService.removerSintomaProntuario(prontuario, sintoma);
+                        break;
                 }
             }
             
