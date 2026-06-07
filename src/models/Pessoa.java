@@ -23,7 +23,9 @@ public abstract class Pessoa {
      * @param endereco
      */
     public Pessoa(String cpf, String nome, String sobrenome, String telefone, String email, String endereco) {
+        validarCpf(cpf);
         this.cpf = cpf;
+        
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.telefone = telefone;
@@ -34,10 +36,17 @@ public abstract class Pessoa {
     public String getCpf() {
         return cpf;
     }
+    private static void validarCpf(String cpf) {
+        if (!cpf.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
+            throw new IllegalArgumentException("\nCPF inválido. Use o formato XXX.XXX.XXX-XX");
+        }
+    }
 
     public String getNome() {
         return nome;
     }
+    
+    
 
     public void setNome(String nome) {
         this.nome = nome;
