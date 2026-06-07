@@ -11,9 +11,18 @@ import models.Medico;
  * @author peres
  */
 public class MedicoRepository extends Repository<Medico> {
+    
+    public Medico buscarPorCpf(String cpf) {
+        for (Medico medico : getElementos()) {
+            if (medico.getCpf().equals(cpf)) {
+                return medico;
+            }
+        }
+        return null;
+    }
 
     public Medico buscarPorCrm(String crm) {
-        for (Medico medico : elementos) {
+        for (Medico medico : getElementos()) {
             if (medico.getCrm().equals(crm)) {
                 return medico;
             }

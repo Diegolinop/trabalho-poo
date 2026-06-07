@@ -13,7 +13,7 @@ import models.Paciente;
 public class PacienteRepository extends Repository<Paciente> {
 
     public Paciente buscarPorCpf(String cpf) {
-        for (Paciente paciente : elementos) {
+        for (Paciente paciente : getElementos()) {
             if (paciente.getCpf().equals(cpf)) {
                 return paciente;
             }

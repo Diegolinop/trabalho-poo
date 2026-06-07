@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class Repository<T> {
 
-    protected List<T> elementos;
+    private List<T> elementos;
 
     public Repository() {
         this.elementos = new ArrayList<>();
@@ -20,6 +20,11 @@ public abstract class Repository<T> {
     }
 
     public List<T> buscarTodos() {
-        return elementos;
+        return new ArrayList<>(elementos);
+    }
+    
+    protected List<T> getElementos() {
+        return new ArrayList<>(elementos);
     }
 }
+

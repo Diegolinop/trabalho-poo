@@ -17,7 +17,7 @@ public class ConsultaRepository extends Repository<Consulta> {
 
     public List<Consulta> buscarPorCpfPaciente(String cpf) {
         List<Consulta> resultado = new ArrayList<>();
-        for (Consulta consulta : elementos) {
+        for (Consulta consulta : getElementos()) {
             if (consulta.getPaciente().getCpf().equals(cpf)) {
                 resultado.add(consulta);
             }
@@ -27,7 +27,7 @@ public class ConsultaRepository extends Repository<Consulta> {
 
     public List<Consulta> buscarPorData(String data) {
         List<Consulta> resultado = new ArrayList<>();
-        for (Consulta consulta : elementos) {
+        for (Consulta consulta : getElementos()) {
             if (consulta.getData().equals(data)) {
                 resultado.add(consulta);
             }

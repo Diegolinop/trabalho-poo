@@ -45,8 +45,19 @@ public class SecretariaService {
     public void cadastrarSecretaria(Secretaria secretaria) {
         secretariaRepository.salvar(secretaria);
     }
-
+    
+    private boolean cpfJaCadastrado(String cpf) {
+        return pacienteRepository.buscarPorCpf(cpf) != null
+            || medicoRepository.buscarPorCpf(cpf) != null
+            || secretariaRepository.buscarPorCpf(cpf) != null;
+    }
+    
     public void cadastrarPaciente(Paciente novoPaciente) {
+        if (cpfJaCadastrado(novoPaciente.getCpf())) {
+            System.out.println("\nErro: Já existe uma pessoa cadastrada com o CPF " + novoPaciente.getCpf());
+            return;
+        }
+        
         pacienteRepository.salvar(novoPaciente);
         System.out.println("Paciente cadastrado com sucesso!");
     }

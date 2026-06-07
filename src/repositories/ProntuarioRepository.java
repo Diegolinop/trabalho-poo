@@ -18,7 +18,7 @@ public class ProntuarioRepository extends Repository<Prontuario> {
 
     public List<Prontuario> buscarPorMedicoEMes(Medico medico, String mes) {
         List<Prontuario> resultado = new ArrayList<>();
-        for (Prontuario prontuario : elementos) {
+        for (Prontuario prontuario : getElementos()) {
             if (prontuario.getMedico().equals(medico)
                     && prontuario.getData().substring(3).equals(mes)) {
                 resultado.add(prontuario);
@@ -29,7 +29,7 @@ public class ProntuarioRepository extends Repository<Prontuario> {
     
     public List<Prontuario> buscarPorMedico(Medico medico) {
         List<Prontuario> resultado = new ArrayList<>();
-        for (Prontuario prontuario : elementos) {
+        for (Prontuario prontuario : getElementos()) {
             if (prontuario.getMedico().equals(medico)) {
                 resultado.add(prontuario);
             }
@@ -38,12 +38,10 @@ public class ProntuarioRepository extends Repository<Prontuario> {
     }
     
     public Prontuario buscarPorMedicoEId(Medico medico, int id) {
-        Prontuario resultado;
-        for (Prontuario prontuario : elementos) {
+        for (Prontuario prontuario : getElementos()) {
             if (prontuario.getMedico().equals(medico)
                     && prontuario.getId() == id) {
-                resultado = prontuario;
-                return resultado;
+                return prontuario;
             }
         }
         return null;
