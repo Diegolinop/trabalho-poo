@@ -34,4 +34,34 @@ public class ConsultaRepository extends Repository<Consulta> {
         }
         return resultado;
     }
+
+    public List<Consulta> buscarPorDataComEmailOuCelular(String data) {
+        List<Consulta> resultado = new ArrayList<>();
+        for (Consulta consulta : elementos) {
+            boolean temEmail = temValor(consulta.getPaciente().getEmail());
+            boolean temCelular = temValor(consulta.getPaciente().getTelefone());
+
+            if (consulta.getData().equals(data) && (temEmail || temCelular)) {
+                resultado.add(consulta);
+            }
+        }
+        return resultado;
+    }
+
+    public List<Consulta> buscarPorDataSemEmailESemCelular(String data) {
+        List<Consulta> resultado = new ArrayList<>();
+        for (Consulta consulta : elementos) {
+            boolean temEmail = temValor(consulta.getPaciente().getEmail());
+            boolean temCelular = temValor(consulta.getPaciente().getTelefone());
+
+            if (consulta.getData().equals(data) && !temEmail && !temCelular) {
+                resultado.add(consulta);
+            }
+        }
+        return resultado;
+    }
+
+    private boolean temValor(String valor) {
+        return valor != null && !valor.isBlank();
+    }
 }

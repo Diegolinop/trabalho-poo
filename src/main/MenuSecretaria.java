@@ -33,6 +33,7 @@ public class MenuSecretaria {
             System.out.println("5 - Agendar Consulta");
             System.out.println("6 - Atualizar Consulta");
             System.out.println("7 - Cancelar Consulta");
+            System.out.println("8 - Gerar Relatório de Consultas");
             System.out.println("0 - Voltar ao Menu Principal\n");
 
             System.out.print("Escolha uma opção: ");
@@ -62,6 +63,9 @@ public class MenuSecretaria {
                     break;
                 case 7:
                     cancelarConsulta();
+                    break;
+                case 8:
+                    gerarRelatorioConsultas();
                     break;
                 case 0:
                     System.out.println("Retornando ao menu principal...");
@@ -311,5 +315,87 @@ public class MenuSecretaria {
         if (consulta != null) {
             secretariaService.cancelarConsulta(consulta);
         }
+    }
+
+    private void gerarRelatorioConsultas() {
+        System.out.println("\n--- GERAR RELATÓRIO DE CONSULTAS ---");
+        System.out.print("Digite a data do dia seguinte (dd/mm/aaaa): ");
+        String diaSeguinte = leitura.nextLine();
+
+        int opcaoRelatorio;
+
+        do {
+            System.out.println("\nEscolha o relatório:");
+            System.out.println("1 - Consultas de pacientes que possuem e-mail ou celular");
+            System.out.println("2 - Consultas de pacientes que não possuem e-mail nem celular");
+            System.out.println("3 - Todas as consultas");
+            System.out.println("0 - Cancelar");
+
+            System.out.print("Escolha uma opção: ");
+            opcaoRelatorio = leitura.nextInt();
+            leitura.nextLine();
+
+            switch (opcaoRelatorio) {
+                case 1:
+                    imprimirRelatorioConsultas(
+                            diaSeguinte,
+                            "pacientes que possuem e-mail ou celular",
+                            secretariaService.gerarRelatorioConsultasComEmailOuCelular(diaSeguinte));
+                    break;
+                case 2:
+                    imprimirRelatorioConsultas(
+                            diaSeguinte,
+                            "pacientes que não possuem e-mail nem celular",
+                            secretariaService.gerarRelatorioConsultasSemEmailESemCelular(diaSeguinte));
+                    break;
+                case 3:
+                    imprimirRelatorioConsultas(
+                            diaSeguinte,
+                            "todas as consultas",
+                            secretariaService.gerarRelatorioTodasConsultas(diaSeguinte));
+                    break;
+                case 0:
+                    System.out.println("Operação cancelada.");
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+        } while (opcaoRelatorio < 0 || opcaoRelatorio > 3);
+    }
+
+    private void imprimirRelatorioConsultas(String diaSeguinte, String filtro, List<Consulta> consultas) {
+        System.out.println("\n--- RELATÓRIO DE CONSULTAS PARA " + diaSeguinte + " ---");
+        System.out.println("Filtro: " + filtro);
+
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhuma consulta encontrada para o filtro informado.");
+            return;
+        }
+
+        System.out.println("Total de consultas: " + consultas.size());
+        System.out.println("--------------------------------------");
+
+        for (Consulta consulta : consultas) {
+            Paciente paciente = consulta.getPaciente();
+            System.out.println("Paciente: " + paciente.getNomeCompleto()
+                    + " | CPF: " + paciente.getCpf()
+                    + " | E-mail: " + mostrarContato(paciente.getEmail())
+                    + " | Celular: " + mostrarContato(paciente.getTelefone()));
+            System.out.println("Consulta: " + consulta.getData()
+                    + " às " + consulta.getHorario()
+                    + " | Médico(a): " + consulta.getMedico().getNomeCompleto()
+                    + " | Tipo: " + consulta.getTipo()
+                    + " | Duração: " + consulta.getDuracao());
+            System.out.println("--------------------------------------");
+        }
+    }
+
+    private String mostrarContato(String contato) {
+        if (contato == null || contato.isBlank()) {
+            return "não cadastrado";
+        }
+
+        return contato;
     }
 }

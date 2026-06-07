@@ -69,6 +69,18 @@ public class SecretariaService {
         return consultaRepository.buscarPorCpfPaciente(cpf);
     }
 
+    public List<Consulta> gerarRelatorioConsultasComEmailOuCelular(String diaSeguinte) {
+        return consultaRepository.buscarPorDataComEmailOuCelular(diaSeguinte);
+    }
+
+    public List<Consulta> gerarRelatorioConsultasSemEmailESemCelular(String diaSeguinte) {
+        return consultaRepository.buscarPorDataSemEmailESemCelular(diaSeguinte);
+    }
+
+    public List<Consulta> gerarRelatorioTodasConsultas(String diaSeguinte) {
+        return consultaRepository.buscarPorData(diaSeguinte);
+    }
+
     public void atualizarNomePaciente(Paciente paciente, String nome) {
         paciente.setNome(nome);
     }
