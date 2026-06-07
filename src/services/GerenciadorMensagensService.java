@@ -31,8 +31,8 @@ public class GerenciadorMensagensService {
 
         for (Consulta consulta : consultasDoDia) {
             Paciente paciente = consulta.getPaciente();
-            boolean temEmail = paciente.getEmail() != null;
-            boolean temTelefone = paciente.getTelefone() != null;
+            boolean temEmail = paciente.getEmail() != null && !paciente.getEmail().isBlank();
+            boolean temTelefone = paciente.getTelefone() != null && !paciente.getTelefone().isBlank();    
 
             System.out.println("\nPaciente: " + paciente.getNomeCompleto());
             System.out.println("Consulta: " + consulta.getData() + " às " + consulta.getHorario()

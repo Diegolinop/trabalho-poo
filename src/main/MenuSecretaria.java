@@ -81,10 +81,12 @@ public class MenuSecretaria {
         String nome = leitura.nextLine();
         System.out.print("Sobrenome: ");
         String sobrenome = leitura.nextLine();
-        System.out.print("Telefone: ");
+        System.out.print("Telefone (deixe em branco se não tiver): ");
         String telefone = leitura.nextLine();
-        System.out.print("Email: ");
+        telefone = telefone.isBlank() ? null : telefone;
+        System.out.print("Email (deixe em branco se não tiver): ");
         String email = leitura.nextLine();
+        email = email.isBlank() ? null : email;
         System.out.print("Endereço: ");
         String endereco = leitura.nextLine();
         System.out.print("Tipo de Convênio (Particular / Plano de Saúde): ");

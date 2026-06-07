@@ -171,8 +171,8 @@ public class MedicoService {
 
     public void registrarProntuario(Prontuario prontuario) {
         prontuarioRepository.salvar(prontuario);
-        prontuario.getMedico().getProntuarios().add(prontuario);
-        prontuario.getPaciente().getProntuarios().add(prontuario);
+        prontuario.getMedico().adicionarProntuario(prontuario);
+        prontuario.getPaciente().adicionarProntuario(prontuario);
     }
     
     public void removerSintomaProntuario(Prontuario prontuario, String sintoma) {
@@ -194,9 +194,15 @@ public class MedicoService {
     public void removerProntuario(Medico medico, int id) {
         Prontuario prontuario = buscarProntuarioPorMedicoEId(medico, id);
         
+        if (prontuario == null) {
+            System.out.println("Não foi encontrado prontuário com o ID " + id);
+            return;
+        }
+
         if (prontuarioRepository.remover(prontuario)) {
-            prontuario.getMedico().getProntuarios().remove(prontuario);
-            prontuario.getPaciente().getProntuarios().remove(prontuario);
+            prontuario.getMedico().removerProntuario(prontuario);
+            prontuario.getPaciente().removerProntuario(prontuario);
+            System.out.println("Prontuário removido com sucesso.");
         }
     }
     

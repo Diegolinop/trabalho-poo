@@ -41,6 +41,12 @@ public class Paciente extends Pessoa {
     }
 
     public List<Prontuario> getProntuarios() {
-        return this.prontuarios;
+        return new ArrayList<>(this.prontuarios);
+    }
+    public void adicionarProntuario(Prontuario prontuario) {
+        this.prontuarios.add(prontuario);
+    }
+    public void removerProntuario(Prontuario prontuario) {
+        this.prontuarios.remove(prontuario);
     }
 }

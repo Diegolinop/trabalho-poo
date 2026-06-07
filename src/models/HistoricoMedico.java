@@ -75,7 +75,7 @@ public class HistoricoMedico {
     }
 
     public List<String> getCirurgias() {
-        return this.cirurgias;
+        return new ArrayList<>(this.cirurgias);
     }
 
 
@@ -86,11 +86,12 @@ public class HistoricoMedico {
     public void removerAlergia(String alergia) {
         if (this.alergias.contains(alergia)) {
             this.alergias.remove(alergia);
+        } else {
+            System.out.println("Alergia não encontrada");
         }
-        System.out.println("Alergia não encontrada");
     }
 
     public List<String> getAlergias() {
-        return this.alergias;
+        return new ArrayList<>(this.alergias);
     }
 }

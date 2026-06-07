@@ -28,7 +28,7 @@ public class MenuPrincipal {
         int opcao;
 
         do {
-            System.out.println("\n=== MENU PRINCIPAL ===");
+            System.out.println("\n--- MENU PRINCIPAL ---");
             System.out.println("1 - Menu da Secretária");
             System.out.println("2 - Menu do Médico");
             System.out.println("3 - Enviar mensagens");

@@ -134,11 +134,10 @@ public class MenuProntuario {
             opcao = leitura.nextInt();
             leitura.nextLine();
 
-            if (opcao == 1) {
-                atualizarSintomas(prontuario);
-            }
-
             switch (opcao) {
+                case 1:
+                    atualizarSintomas(prontuario);
+                    break;
                 case 2:
                     System.out.print("Digite o diagnóstico");
                     String diagnostico = leitura.nextLine();

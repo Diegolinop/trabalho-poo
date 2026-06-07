@@ -13,10 +13,7 @@ public abstract class Pessoa {
     private String email;
 
     private String endereco;
-
-    public Pessoa() {
-    }
-
+    
     /**
      *
      * @param cpf
