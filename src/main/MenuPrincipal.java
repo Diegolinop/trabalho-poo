@@ -34,7 +34,7 @@ public class MenuPrincipal {
      * @param secretaria Secretária padrão do sistema.
      */
     public MenuPrincipal(Scanner leitura, SecretariaService secretariaService, MedicoService medicoService,
-                         GerenciadorMensagensService gerenciadorMensagensService, Secretaria secretaria) {
+                         GerenciadorMensagensService gerenciadorMensagensService) {
         this.leitura = leitura;
         this.secretariaService = secretariaService;
         this.medicoService = medicoService;
