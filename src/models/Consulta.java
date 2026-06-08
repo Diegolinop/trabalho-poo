@@ -23,8 +23,7 @@ public class Consulta {
     
     /**
      * Cria uma nova consulta com todos os dados necessários.
-     * 
-     * @param data Data da consulta.
+     * * @param data Data da consulta.
      * @param horario Horário da consulta.   
      * @param medico Médico responsável.
      * @param paciente Paciente a ser atentido.
@@ -35,7 +34,7 @@ public class Consulta {
         this.horario = horario;
         this.medico = medico;
         this.paciente = paciente;
-        this.tipo = tipo;
+        setTipo(tipo);
     }
     
     /**
@@ -107,6 +106,9 @@ public class Consulta {
      * @param tipo "Normal" ou "Retorno".
      */
     public void setTipo(String tipo) {
+        if (tipo == null || !(tipo.equalsIgnoreCase("Normal") || tipo.equalsIgnoreCase("Retorno"))) {
+            throw new IllegalArgumentException("Tipo de consulta inválido. Deve ser 'Normal' ou 'Retorno'.");
+        }
         this.tipo = tipo;
     }
     
@@ -118,11 +120,13 @@ public class Consulta {
      */
     public String getDuracao() {
         if (this.tipo == null) return "Tipo não definido";
-        if (this.tipo.equals("Normal") || this.tipo.equalsIgnoreCase("normal")) {
+        
+        if (this.tipo.equalsIgnoreCase("Normal")) {
             return "1 hora";
-        } else { 
-            System.out.println("Tipo inválido, atualize o cadastro de forma correta");
-            return "";
+        } else if (this.tipo.equalsIgnoreCase("Retorno")) {
+            return "30 minutos";
         }
+        
+        return "";
     }
 }

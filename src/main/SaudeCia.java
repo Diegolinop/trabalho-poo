@@ -79,8 +79,7 @@ public class SaudeCia {
                 leitura,
                 secretariaService,
                 medicoService,
-                gerenciadorMensagensService,
-                secretaria
+                gerenciadorMensagensService
         );
         
        // Inicia a execução do sistema exibindo a tela principal.

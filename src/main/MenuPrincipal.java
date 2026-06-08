@@ -2,7 +2,6 @@ package main;
 
 import java.util.Scanner;
 
-import models.Secretaria;
 import services.GerenciadorMensagensService;
 import services.MedicoService;
 import services.SecretariaService;
@@ -31,7 +30,6 @@ public class MenuPrincipal {
      * @param secretariaService Serviço da secretária.
      * @param medicoService Serviço do médico.
      * @param gerenciadorMensagensService Serviço de envio de mensagens.
-     * @param secretaria Secretária padrão do sistema.
      */
     public MenuPrincipal(Scanner leitura, SecretariaService secretariaService, MedicoService medicoService,
                          GerenciadorMensagensService gerenciadorMensagensService) {

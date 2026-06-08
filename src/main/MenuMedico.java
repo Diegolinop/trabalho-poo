@@ -39,6 +39,7 @@ public class MenuMedico {
 
         Medico medicoLogin = medicoService.buscarMedicoPorCrm(crmMedico);
         if (medicoLogin == null) {
+            System.out.println("Médico não encontrado no sistema!");
             return;
         }
 

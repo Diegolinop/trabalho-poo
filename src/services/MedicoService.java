@@ -48,16 +48,12 @@ public class MedicoService {
     }
     
     /**
-     * Busca um médico pelo CRM. Exibe mensagem caso não seja encontrado.
+     * Busca um médico pelo CRM.
      * @param crm CRM do médico.
      * @return médico encontrado ou null.
      */
     public Medico buscarMedicoPorCrm(String crm) {
-        Medico medico = medicoRepository.buscarPorCrm(crm);
-        if (medico == null) {
-            System.out.println("Insira um CRM válido para entrar no sistema");
-        }
-        return medico;
+        return medicoRepository.buscarPorCrm(crm);
     }
     
     /**
@@ -96,17 +92,17 @@ public class MedicoService {
      * @param fuma indica se o paciente é fumante.
      * @param bebe indica se o paciente consome bebida alcoólica.
      * @param colesterol indica se o paciente tem colesterol alto.
-     * @param diabete indica se o paciente tem diabetes.
+     * @param diabetes indica se o paciente tem diabetes.
      * @param doencaCardiaca indica se o paciente tem doença cardíaca.
      */
-    public void cadastrarHistoricoMedico(Paciente paciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabete, boolean doencaCardiaca) {
+    public void cadastrarHistoricoMedico(Paciente paciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabetes, boolean doencaCardiaca) {
         paciente.setHistoricoMedico(new HistoricoMedico());
 
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setFuma(fuma);
         historicoMedico.setBebe(bebe);
         historicoMedico.setColesterol(colesterol);
-        historicoMedico.setDiabete(diabete);
+        historicoMedico.setDiabetes(diabetes);
         historicoMedico.setDoencaCardiaca(doencaCardiaca);
     }
     
@@ -141,13 +137,13 @@ public class MedicoService {
     }
     
     /**
-     * Atualiza o campo "diabete" do histórico médico do paciente.
+     * Atualiza o campo "diabetes" do histórico médico do paciente.
      * @param paciente paciente a ser atualizado.
-     * @param diabete novo valor.
+     * @param diabetes novo valor.
      */
-    public void atualizarDiabetePaciente(Paciente paciente, boolean diabete) {
+    public void atualizarDiabetesPaciente(Paciente paciente, boolean diabetes) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
-        historicoMedico.setDiabete(diabete);
+        historicoMedico.setDiabetes(diabetes);
     }
     
     
@@ -184,9 +180,10 @@ public class MedicoService {
      * Remove uma cirurgia do histórico médico do paciente.
      * @param paciente paciente a ser atualizado.
      * @param cirurgia nome da cirurgia a ser removida.
+     * @return true se foi removida, false se não existia.
      */
-    public void removerCirurgiaPaciente(Paciente paciente, String cirurgia) {
-        paciente.getHistoricoMedico().removerCirurgia(cirurgia);
+    public boolean removerCirurgiaPaciente(Paciente paciente, String cirurgia) {
+        return paciente.getHistoricoMedico().removerCirurgia(cirurgia);
     }
 
     /**
@@ -202,9 +199,10 @@ public class MedicoService {
      * Remove uma alergia do histórico médico do paciente.
      * @param paciente paciente a ser atualizado.
      * @param alergia nome da alergia a ser removida.
+     * @return true se foi removida, false se não existia.
      */
-    public void removerAlergiaPaciente(Paciente paciente, String alergia) {
-        paciente.getHistoricoMedico().removerAlergia(alergia);
+    public boolean removerAlergiaPaciente(Paciente paciente, String alergia) {
+        return paciente.getHistoricoMedico().removerAlergia(alergia);
     }
     
     /**
@@ -213,7 +211,6 @@ public class MedicoService {
      * @param paciente paciente a ter o histórico exibido.
      */
     public void mostrarHistoricoMedico(Paciente paciente) {
-        // Veriica se o paciente possui histórico médico, avisa se não tiver.
         if (!verificarHistoricoMedico(paciente)) {
             System.out.println("Este paciente não possui histórico médico cadastrado.");
             return;
@@ -221,15 +218,13 @@ public class MedicoService {
         
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         
-        // Layout do histórico.
         System.out.println("--- HISTÓRICO MÉDICO DE " + paciente.getNomeCompleto() + " ---");
         System.out.println("Fuma: " + (historicoMedico.getFuma() ? "Sim" : "Não"));
         System.out.println("Bebe: " + (historicoMedico.getBebe() ? "Sim" : "Não"));
         System.out.println("Colesterol alto: " + (historicoMedico.getColesterol() ? "Sim" : "Não"));
-        System.out.println("Diabete: " + (historicoMedico.getDiabete() ? "Sim" : "Não"));
+        System.out.println("Diabetes: " + (historicoMedico.getDiabetes() ? "Sim" : "Não"));
         System.out.println("Doença cardíaca: " + (historicoMedico.getDoencaCardiaca() ? "Sim" : "Não"));
         
-        // Printa as cirurgias e as alergias com um foreach
         System.out.println("\nCirurgias:");
         if (historicoMedico.getCirurgias().isEmpty()) {
             System.out.println("Nenhuma cirurgia registrada.");
@@ -270,10 +265,8 @@ public class MedicoService {
      * @return true se o ID estiver disponível, false se já estiver em uso.
      */
     public boolean verificarDisponibilidadeIdProntuario(Medico medico, int id) {
-        // Busca todos os prontuários do médico e armazena na variável prontuarios.
         List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
         
-        // Compara o id solicitado com os outros prontuarios.
         for (Prontuario prontuario : prontuarios) {
            if (prontuario.getId() == id) {
                return false;
@@ -296,9 +289,10 @@ public class MedicoService {
      * Remove um sintoma do prontuário informado.
      * @param prontuario prontuário a ser atualizado.
      * @param sintoma sintoma a ser removido.
+     * @return true se foi removido, false se não existia.
      */
-    public void removerSintomaProntuario(Prontuario prontuario, String sintoma) {
-        prontuario.removerSintoma(sintoma);
+    public boolean removerSintomaProntuario(Prontuario prontuario, String sintoma) {
+        return prontuario.removerSintoma(sintoma);
     }
     
     /**
@@ -335,16 +329,13 @@ public class MedicoService {
      * @param id ID do prontuário a ser removido.
      */
     public void removerProntuario(Medico medico, int id) {
-        // Procuta o prontuario pelo médico e pelo ID.
         Prontuario prontuario = buscarProntuarioPorMedicoEId(medico, id);
         
-        // Avisa se não achar prontuário.
         if (prontuario == null) {
             System.out.println("Não foi encontrado prontuário com o ID " + id);
             return;
         }
         
-        // Se achar o prontuário, remove ele do médico e do paciente.
         if (prontuarioRepository.remover(prontuario)) {
             prontuario.getMedico().removerProntuario(prontuario);
             prontuario.getPaciente().removerProntuario(prontuario);
@@ -358,17 +349,14 @@ public class MedicoService {
      * @param id ID do prontuário a ser exibido.
      */
     public void mostrarProntuario(Medico medico, int id) {
-        // Busca o prontuário por médico e ID, e armazena na variável prontuário.
         Prontuario prontuario = prontuarioRepository.buscarPorMedicoEId(medico, id);
         
-        // Se não achar, avisa.
         if (prontuario == null) {
             System.out.println("O médico não há prontuário com esse ID");
             return;
         }
         
-        // Layout do prontuário.
-        System.out.println("--- PRONTUÁRIO DO " + prontuario.getPaciente().getNomeCompleto() + " ---");
+        System.out.println("--- PRONTUÁRIOS DO " + prontuario.getPaciente().getNomeCompleto() + " ---");
         System.out.println("--- FEITO PELO MÉDICO " + medico.getNomeCompleto() + " ---");
         
         System.out.println("\nSintomas:");
@@ -389,7 +377,6 @@ public class MedicoService {
      * @param medico médico a ter os prontuários listados.
      */
     public void mostrarListaProntuarios(Medico medico) {
-        // Procura todos os prontuários do médico e armazena na variável prontuarios.
         List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
         
         if (prontuarios.isEmpty()) {

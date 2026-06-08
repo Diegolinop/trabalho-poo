@@ -212,7 +212,12 @@ public class MenuProntuario {
             case 2:
                 System.out.print("Digite o sintoma a ser removido: ");
                 sintoma = leitura.nextLine();
-                medicoService.removerSintomaProntuario(prontuario, sintoma);
+                boolean sintomaRemovido = medicoService.removerSintomaProntuario(prontuario, sintoma);
+                if (sintomaRemovido) {
+                    System.out.println("Sintoma removido com sucesso!");
+                } else {
+                    System.out.println("Sintoma não encontrado no prontuário.");
+                }
                 break;
             default:
                 break;

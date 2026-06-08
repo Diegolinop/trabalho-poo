@@ -7,8 +7,7 @@ import java.util.List;
  * Representa o histórico médico de um paciente.
  * Armazena informações de saúde como condições clínicas,
  * cirurgias e alergias.
- * 
- * Este cadastro é de acesso exclusivo do médico.
+ * * Este cadastro é de acesso exclusivo do médico.
  */
 public class HistoricoMedico {
     
@@ -22,7 +21,7 @@ public class HistoricoMedico {
     private boolean colesterol;
     
     /** Indica se o paciente possui diabetes. */
-    private boolean diabete;
+    private boolean diabetes;
     
     /** Indica se o paciente possui doença cardíaca. */
     private boolean doencaCardiaca;
@@ -56,7 +55,6 @@ public class HistoricoMedico {
     public void setFuma(boolean fuma) {
         this.fuma = fuma;
     }
-    
     
     /**
      * Retorna se o paciente consome bebida alcoólica.
@@ -94,16 +92,16 @@ public class HistoricoMedico {
      * Retorna se o paciente possui diabetes.
      * @return true se tem diabetes, false caso contrário.
      */
-    public boolean getDiabete() {
-        return this.diabete;
+    public boolean getDiabetes() {
+        return this.diabetes;
     }
 
     /**
      * Define se o paciente possui diabetes.
-     * @param diabete true se tem diabetes, false caso contrário.
+     * @param diabetes true se tem diabetes, false caso contrário.
      */
-    public void setDiabete(boolean diabete) {
-        this.diabete = diabete;
+    public void setDiabetes(boolean diabetes) {
+        this.diabetes = diabetes;
     }
     
     /**
@@ -132,15 +130,11 @@ public class HistoricoMedico {
     
     /**
      * Remove uma cirurgia do histórico do paciente.
-     * Exibe mensagem caso a cirurgia não seja encontrada.
      * @param cirurgia nome da cirurgia a ser removida.
+     * @return true se a cirurgia foi removida, false caso não exista.
      */
-    public void removerCirurgia(String cirurgia) {
-        if (this.cirurgias.contains(cirurgia)) {
-            this.cirurgias.remove(cirurgia);
-        } else {
-            System.out.println("Cirurgia não encontrada");
-        }
+    public boolean removerCirurgia(String cirurgia) {
+        return this.cirurgias.remove(cirurgia);
     }
     
     /**
@@ -150,7 +144,6 @@ public class HistoricoMedico {
     public List<String> getCirurgias() {
         return new ArrayList<>(this.cirurgias);
     }
-
     
     /**
      * Adiciona uma alergia ao histórico do paciente.
@@ -162,15 +155,11 @@ public class HistoricoMedico {
     
     /**
      * Remove uma alergia do histórico do paciente.
-     * Exibe mensagem caso a alergia não seja encontrada.
      * @param alergia nome da alergia a ser removida.
+     * @return true se a alergia foi removida, false caso não exista.
      */
-    public void removerAlergia(String alergia) {
-        if (this.alergias.contains(alergia)) {
-            this.alergias.remove(alergia);
-        } else {
-            System.out.println("Alergia não encontrada");
-        }
+    public boolean removerAlergia(String alergia) {
+        return this.alergias.remove(alergia);
     }
     
     /**

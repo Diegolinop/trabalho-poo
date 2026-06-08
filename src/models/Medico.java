@@ -88,4 +88,32 @@ public class Medico extends Pessoa {
     public void removerProntuario(Prontuario prontuario) {
         this.prontuarios.remove(prontuario);
     }
+
+    /**
+     * Retorna o número total de atendimentos realizados pelo médico.
+     * @return quantidade de prontuários associados.
+     */
+    public int getTotalAtendimentos() {
+        return this.prontuarios.size();
+    }
+
+    /**
+     * Gera um relatório do fluxo de clientes do médico.
+     * @return String formatada com os atendimentos.
+     */
+    public String getFluxoClientes() {
+        StringBuilder fluxo = new StringBuilder();
+        fluxo.append("--- FLUXO DE ATENDIMENTOS ---\n");
+        fluxo.append("Total de atendimentos: ").append(getTotalAtendimentos()).append("\n");
+        
+        if (this.prontuarios.isEmpty()) {
+            fluxo.append("Nenhum atendimento registrado.\n");
+        } else {
+            for (Prontuario prontuario : this.prontuarios) {
+                fluxo.append("- Paciente: ").append(prontuario.getPaciente().getNomeCompleto())
+                     .append(" | Data: ").append(prontuario.getData()).append("\n");
+            }
+        }
+        return fluxo.toString();
+    }
 }

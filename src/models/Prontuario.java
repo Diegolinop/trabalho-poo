@@ -7,8 +7,7 @@ import java.util.List;
  * Representa o prontuário médico de um paciente.
  * Registra os sintomas relatados, o diagnóstico e a prescrição
  * de tratamento definidos pelo médico durante o atendimento.
- * 
- * O paciente, o médico, a data e o ID são definidos na criação
+ * * O paciente, o médico, a data e o ID são definidos na criação
  * e não podem ser alterados posteriormente.
  */
 public class Prontuario {
@@ -93,16 +92,11 @@ public class Prontuario {
     
     /**
      * Remove um sintoma da lista do prontuário.
-     * Exibe mensagem caso o sintoma não seja encontrado.
      * @param sintoma sintoma a ser removido.
+     * @return true se o sintoma foi removido, false caso não exista.
      */
-    public void removerSintoma(String sintoma) {
-        if (this.sintomas.contains(sintoma)) {
-            this.sintomas.remove(sintoma);
-        }
-        else {
-            System.out.println("Sintoma não encontrado no prontuário");
-        }
+    public boolean removerSintoma(String sintoma) {
+        return this.sintomas.remove(sintoma);
     }
     
     /**

@@ -102,13 +102,13 @@ public class MenuHistoricoMedico {
         boolean bebe = leitura.nextBoolean();
         System.out.println("O paciente tem colesterol alto? (true/false): ");
         boolean colesterol = leitura.nextBoolean();
-        System.out.println("O paciente tem diabete? (true/false): ");
-        boolean diabete = leitura.nextBoolean();
+        System.out.println("O paciente tem diabetes? (true/false): ");
+        boolean diabetes = leitura.nextBoolean();
         System.out.print("O paciente tem doença cardíaca? (true/false): ");
         boolean doencaCardiaca = leitura.nextBoolean();
         leitura.nextLine();
         
-        medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabete, doencaCardiaca);
+        medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabetes, doencaCardiaca);
 
         System.out.println("Digite as cirurgias - digite 'fim' para parar: ");
         String cirurgia;
@@ -152,7 +152,7 @@ public class MenuHistoricoMedico {
             System.out.println("1 - Fuma");
             System.out.println("2 - Bebe");
             System.out.println("3 - Colesterol alto");
-            System.out.println("4 - Diabete");
+            System.out.println("4 - Diabetes");
             System.out.println("5 - Doença cardíaca");
             System.out.println("6 - Cirurgias");
             System.out.println("7 - Alergias");
@@ -180,7 +180,7 @@ public class MenuHistoricoMedico {
                         medicoService.atualizarColesterolPaciente(paciente, valor);
                         break;
                     case 4:
-                        medicoService.atualizarDiabetePaciente(paciente, valor);
+                        medicoService.atualizarDiabetesPaciente(paciente, valor);
                         break;
                     case 5:
                         medicoService.atualizarDoencaCardiacaPaciente(paciente, valor);
@@ -220,7 +220,12 @@ public class MenuHistoricoMedico {
                 break;
             case 2:
                 System.out.print("Digite o nome da cirurgia a ser removida: ");
-                medicoService.removerCirurgiaPaciente(paciente, leitura.nextLine());
+                boolean cirurgiaRemovida = medicoService.removerCirurgiaPaciente(paciente, leitura.nextLine());
+                if (cirurgiaRemovida) {
+                    System.out.println("Cirurgia removida com sucesso!");
+                } else {
+                    System.out.println("Cirurgia não encontrada no histórico.");
+                }
                 break;
             case 0:
                 break;
@@ -251,7 +256,12 @@ public class MenuHistoricoMedico {
                 break;
             case 2:
                 System.out.print("Digite o nome da alergia a ser removida: ");
-                medicoService.removerAlergiaPaciente(paciente, leitura.nextLine());
+                boolean alergiaRemovida = medicoService.removerAlergiaPaciente(paciente, leitura.nextLine());
+                if (alergiaRemovida) {
+                    System.out.println("Alergia removida com sucesso!");
+                } else {
+                    System.out.println("Alergia não encontrada no histórico.");
+                }
                 break;
             case 0:
                 break;
