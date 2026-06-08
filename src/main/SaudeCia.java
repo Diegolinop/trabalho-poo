@@ -8,7 +8,7 @@ import repositories.*;
 import services.*;
 
 /**
- * Classe principal responsável por iniciar a aplicação Saúde & Cia.
+ * Classe principal responsável por iniciar a aplicação Saúde e Cia.
  * * Ela realiza a configuração inicial do sistema, instanciando os repositórios,
  * os serviços e cadastrando dados iniciais de funcionários. Por fim, 
  * inicializa e exibe o menu principal para a interação com o usuário.
