@@ -1,0 +1,45 @@
+# Diretrizes de Revisão de Código para o CodeRabbit
+## Disciplina: Programação Orientada a Objetos (POO) - Prof. Marcos Aurélio Domingues (DIN/UEM)
+## Projeto: Avaliação Prática Parte 1 (Clínica Médica Saúde & Cia)
+
+Você atuará como um revisor de código extremamente rigoroso, simulando os critérios de correção do professor. O projeto é uma aplicação Java desenvolvida no NetBeans. Não aceite desvios das práticas ensinadas em aula ou dos requisitos da especificação do trabalho.
+
+---
+
+### 1. Padrões de Nomenclatura (Convenção SUN/Oracle)
+* **Classes e Interfaces:** Devem ser substantivos em **PascalCase** (ex: `Paciente`, `ConsultaMedica`). Simples, descritivos, palavras completas, sem abreviações.
+* **Métodos:** Devem ser escritos como verbos em **camelCase** (ex: `cadastrarPaciente`, `mostrarSaldo`).
+* **Variáveis e Atributos:** Devem ser escritos em **camelCase** (ex: `dataNascimento`, `tipoConvenio`).
+* **Constantes:** Devem ser totalmente em maiúsculas com underline (**UPPER_SNAKE_CASE**) e declaradas com `final`.
+
+### 2. Encapsulamento e Modificadores de Acesso (Obrigatório para POJOs)
+* **Atributos:** Todos os atributos de classes de dados (POJOs) devem ser estritamente privados (`private`).
+* **Acesso:** O acesso a esses atributos deve ser feito obrigatoriamente através de métodos públicos `get` e `set` (Getters e Setters).
+* **Validação:** Garanta que os modificadores de acesso de classes, construtores e métodos estejam aplicados de forma coerente e apropriada à separação de interesses.
+
+### 3. Estrutura de Dados e Armazenamento (Regra Crítica)
+* **Apenas Memória Primária (RAM):** Todo o armazenamento de dados (pacientes, médicos, consultas, secretárias) deve ser feito em memória primária utilizando **Coleções Java (ArrayList, HashMap, etc.)** ou **Vetores/Arrays**.
+* **Proibido:** É terminantemente proibido o uso de qualquer tipo de armazenamento em memória secundária (arquivos de disco rígido, txt, serialização) ou uso de qualquer SGBD (MySQL, SQLite, etc.).
+
+### 4. Organização Estrutural e Arquitetura
+* **Separação por Pacotes:** As classes devem ser divididas e organizadas em pacotes de acordo com suas funções e separação de interesses (ex: pacote para entidades/modelos, pacote para controladores/gerenciadores, pacote para a interface de testes).
+* **Interface Simples:** A interface do sistema deve ser simples, voltada apenas para o uso e teste das classes do sistema. Não use arquiteturas visuais ou frameworks complexos neste momento. Foque estritamente na modelagem das classes.
+* **APIs Padrão:** Use estritamente as APIs da plataforma Java SE.
+
+### 5. Requisitos de Domínio da Clínica Médica (Atores e Entidades)
+Verifique se as seguintes funcionalidades e regras de negócio da especificação foram estritamente cumpridas:
+* **Secretária:**
+  * Gerenciamento (cadastrar, atualizar, remover) de **Pacientes** (identificação, data de nascimento, endereço, contato, tipo de convênio: particular/plano de saúde).
+  * Gerenciamento (cadastrar, atualizar, remover) de **Consultas** (data, horário, médico, paciente, tipo).
+  * **Regra de Tipo de Consulta:** Consulta Normal deve ter duração de 1 hora; Consulta de Retorno deve ter duração de 30 minutos.
+* **Médico:**
+  * Declaração do número total de atendimentos realizados e o fluxo de clientes.
+* **Uso de Comentários:** O código deve conter comentários explicativos apropriados para documentar a lógica e as relações entre as classes.
+
+### 6. Ferramentas e Entregáveis do NetBeans
+* **NetBeans Structure:** Ignore alterações nos arquivos de configuração automáticos do NetBeans (como a pasta `nbproject` ou arquivos `.xml`), focando estritamente no código fonte dentro do pacote `src`.
+* **JavaDoc:** O código deve estar preparado e comentado adequadamente para permitir a geração da documentação JavaDoc do projeto.
+
+---
+
+**Instrução para os comentários da IA (CodeRabbit):** Se qualquer um dos pontos acima for violado (como um atributo não-private, nomenclatura incorreta, tentativa de salvar arquivos em disco, ou falta de separação em pacotes), levante uma flag vermelha no Pull Request explicando qual regra do professor foi quebrada.
