@@ -173,12 +173,12 @@ public class MenuProntuario {
 
         switch (opcaoSintoma) {
             case 1:
-                System.out.print("Digite o sintoma a ser adicionado");
+                System.out.print("Digite o sintoma a ser adicionado: ");
                 sintoma = leitura.nextLine();
                 medicoService.adicionarSintomaProntuario(prontuario, sintoma);
                 break;
             case 2:
-                System.out.print("Digite o sintoma a ser adicionado");
+                System.out.print("Digite o sintoma a ser removido: ");
                 sintoma = leitura.nextLine();
                 medicoService.removerSintomaProntuario(prontuario, sintoma);
                 break;

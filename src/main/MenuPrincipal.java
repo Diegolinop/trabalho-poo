@@ -40,7 +40,7 @@ public class MenuPrincipal {
 
             switch (opcao) {
                 case 1:
-                    new MenuSecretaria(leitura, secretariaService, secretaria).exibir();
+                    new MenuSecretaria(leitura, secretariaService).exibir();
                     break;
                 case 2:
                     new MenuMedico(leitura, medicoService).exibir();

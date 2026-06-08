@@ -57,10 +57,8 @@ public class MedicoService {
     }
 
     public void cadastrarHistoricoMedico(Paciente paciente, boolean fuma, boolean bebe, boolean colesterol, boolean diabete, boolean doencaCardiaca) {
-        if (!verificarHistoricoMedico(paciente)) {
-            paciente.setHistoricoMedico(new HistoricoMedico());
-        }
-        
+        paciente.setHistoricoMedico(new HistoricoMedico());
+
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setFuma(fuma);
         historicoMedico.setBebe(bebe);

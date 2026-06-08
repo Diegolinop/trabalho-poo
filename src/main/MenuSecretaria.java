@@ -15,10 +15,9 @@ public class MenuSecretaria {
     private SecretariaService secretariaService;
     private Secretaria secretaria;
 
-    public MenuSecretaria(Scanner leitura, SecretariaService secretariaService, Secretaria secretaria) {
+    public MenuSecretaria(Scanner leitura, SecretariaService secretariaService) {
         this.leitura = leitura;
         this.secretariaService = secretariaService;
-        this.secretaria = secretaria;
     }
 
     public void exibir() {
@@ -27,13 +26,14 @@ public class MenuSecretaria {
 
         Secretaria secretariaLogin = secretariaService.buscarSecretariaPorMatricula(matriculaSecretaria);
         if (secretariaLogin == null) {
+            System.out.println("Acesso negado. Retornando ao menu principal.");
             return;
         }
         
         int opcao;
 
         do {
-            System.out.println("\n--- MENU DA SECRETÁRIA (" + secretaria.getNomeCompleto() + ") ---");
+            System.out.println("\n--- MENU DA SECRETÁRIA (" + secretariaLogin.getNomeCompleto() + ") ---");
             System.out.println("1 - Cadastrar Paciente");
             System.out.println("2 - Listar Pacientes");
             System.out.println("3 - Remover Paciente");

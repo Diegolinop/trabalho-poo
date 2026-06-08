@@ -29,9 +29,19 @@ public class SaudeCia {
                 "Rua XXX, 123",
                 "SEC-100"
         );
+        
+        Secretaria secretaria02 = new Secretaria(
+                "777.888.999-00",
+                "Julia",
+                "Sousa",
+                "(67) 99999-9999",
+                "secretaria2@gmail.com",
+                "Rua XXX, 123",
+                "SEC-110"
+        );
 
         Medico medicoNovo = new Medico(
-                "123.456.789-00",
+                "111.222.333-00",
                 "Diego",
                 "Suárez",
                 "(67) 99999-9999",
@@ -43,7 +53,8 @@ public class SaudeCia {
 
         medicoService.cadastrarMedico(medicoNovo);
         secretariaService.cadastrarSecretaria(secretaria);
-
+        secretariaService.cadastrarSecretaria(secretaria02);
+        
         Scanner leitura = new Scanner(System.in);
         MenuPrincipal menuPrincipal = new MenuPrincipal(
                 leitura,

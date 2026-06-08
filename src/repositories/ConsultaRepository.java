@@ -37,7 +37,7 @@ public class ConsultaRepository extends Repository<Consulta> {
 
     public List<Consulta> buscarPorDataComEmailOuCelular(String data) {
         List<Consulta> resultado = new ArrayList<>();
-        for (Consulta consulta : elementos) {
+        for (Consulta consulta : getElementos()) {
             boolean temEmail = temValor(consulta.getPaciente().getEmail());
             boolean temCelular = temValor(consulta.getPaciente().getTelefone());
 
@@ -50,7 +50,7 @@ public class ConsultaRepository extends Repository<Consulta> {
 
     public List<Consulta> buscarPorDataSemEmailESemCelular(String data) {
         List<Consulta> resultado = new ArrayList<>();
-        for (Consulta consulta : elementos) {
+        for (Consulta consulta : getElementos()) {
             boolean temEmail = temValor(consulta.getPaciente().getEmail());
             boolean temCelular = temValor(consulta.getPaciente().getTelefone());
 
