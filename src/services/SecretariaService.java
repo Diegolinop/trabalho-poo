@@ -18,16 +18,16 @@ import repositories.PacienteRepository;
 public class SecretariaService {
 
     /** Repositório de pacientes. */
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     /** Repositório de consultas. */
-    private ConsultaRepository consultaRepository;
+    private final ConsultaRepository consultaRepository;
 
     /** Repositório de médicos. */
-    private MedicoRepository medicoRepository;
+    private final MedicoRepository medicoRepository;
 
     /** Repositório de secretárias. */
-    private SecretariaRepository secretariaRepository;
+    private final SecretariaRepository secretariaRepository;
 
 
     /**
