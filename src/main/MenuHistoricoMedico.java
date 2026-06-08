@@ -68,6 +68,8 @@ public class MenuHistoricoMedico {
                 case 4:
                     medicoService.mostrarHistoricoMedico(pacienteBuscado);
                     break;
+                case 0:
+                    break;
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
                     break;
@@ -105,6 +107,8 @@ public class MenuHistoricoMedico {
         System.out.print("O paciente tem doença cardíaca? (true/false): ");
         boolean doencaCardiaca = leitura.nextBoolean();
         leitura.nextLine();
+        
+        medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabete, doencaCardiaca);
 
         System.out.println("Digite as cirurgias - digite 'fim' para parar: ");
         String cirurgia;
@@ -126,7 +130,6 @@ public class MenuHistoricoMedico {
             }
         } while (!alergia.equalsIgnoreCase("fim"));
 
-        medicoService.cadastrarHistoricoMedico(paciente, fuma, bebe, colesterol, diabete, doencaCardiaca);
         System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " cadastrados com sucesso!\n");
     }
 

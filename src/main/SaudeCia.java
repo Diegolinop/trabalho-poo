@@ -40,7 +40,7 @@ public class SaudeCia {
                 "Diego",
                 "Suárez",
                 "(67) 99999-9999",
-                "secretaria@gmail.com",
+                "secretaria1@gmail.com",
                 "Rua XXX, 123",
                 "SEC-100"
         );
@@ -48,8 +48,8 @@ public class SaudeCia {
         // Instancia os dados de uma segunda secretária.
         Secretaria secretaria02 = new Secretaria(
                 "777.888.999-00",
-                "Julia",
-                "Sousa",
+                "Bruna",
+                "Scheffel",
                 "(67) 99999-9999",
                 "secretaria2@gmail.com",
                 "Rua XXX, 123",
@@ -59,10 +59,10 @@ public class SaudeCia {
         // Instancia os dados mockados de um médico.
         Medico medicoNovo = new Medico(
                 "111.222.333-00",
-                "Diego",
-                "Suárez",
+                "Jose Luis",
+                "Peres",
                 "(67) 99999-9999",
-                "medico@gmail.com",
+                "joseluisinho@gmail.com",
                 "Rua XXX, 123",
                 "Cardiologista",
                 "12345"
