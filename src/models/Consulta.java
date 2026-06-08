@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models;
 
 /**
@@ -122,9 +118,9 @@ public class Consulta {
      */
     public String getDuracao() {
         if (this.tipo == null) return "Tipo não definido";
-        if (this.tipo.equalsIgnoreCase("normal")) return "1 hora";
-        else if (this.tipo.equalsIgnoreCase("retorno"))  return "30 minutos";
-        else { 
+        if (this.tipo.equals("Normal") || this.tipo.equalsIgnoreCase("normal")) {
+            return "1 hora";
+        } else { 
             System.out.println("Tipo inválido, atualize o cadastro de forma correta");
             return "";
         }
