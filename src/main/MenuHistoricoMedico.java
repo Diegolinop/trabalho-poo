@@ -5,16 +5,32 @@ import java.util.Scanner;
 import models.Paciente;
 import services.MedicoService;
 
+/**
+ * Menu interativo para gerenciamento do histórico médico dos pacientes.
+ * Permite cadastrar, atualizar, remover e visualizar os dados de saúde.
+ */
 public class MenuHistoricoMedico {
 
-    private Scanner leitura;
-    private MedicoService medicoService;
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio do médico. */
+    private final MedicoService medicoService;
 
+    /**
+     * Cria o menu de histórico médico.
+     * @param leitura Scanner de entrada.
+     * @param medicoService Serviço do médico.
+     */
     public MenuHistoricoMedico(Scanner leitura, MedicoService medicoService) {
         this.leitura = leitura;
         this.medicoService = medicoService;
     }
 
+    /**
+     * Exibe o menu principal de histórico médico e processa as opções escolhidas.
+     * Exige a busca prévia de um paciente pelo CPF para liberar as operações.
+     */
     public void exibir() {
         System.out.println("\n--- Gerenciar Histórico Médico ---");
         System.out.print("Digite o CPF do paciente: ");
@@ -59,13 +75,17 @@ public class MenuHistoricoMedico {
         } while (opcao != 0);
     }
 
+    /**
+     * Coleta os dados e registra um novo histórico médico para o paciente informado.
+     * @param paciente paciente que receberá o histórico.
+     */
     private void cadastrarHistoricoMedico(Paciente paciente) {
         System.out.println("\n--- Cadastrar Histórico Médico ---");
 
         if (medicoService.verificarHistoricoMedico(paciente)) {
             boolean valor;
 
-            System.out.println("O paciente já apresenta um cadastro médico, deseja sobreescreve-lo? (true/false");
+            System.out.println("O paciente já apresenta um cadastro médico, deseja sobreescreve-lo? (true/false)");
             valor = leitura.nextBoolean();
             leitura.nextLine();
 
@@ -110,6 +130,10 @@ public class MenuHistoricoMedico {
         System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " cadastrados com sucesso!\n");
     }
 
+    /**
+     * Permite a atualização dos dados de saúde do histórico médico do paciente.
+     * @param paciente paciente a ter o histórico atualizado.
+     */
     private void atualizarHistoricoMedico(Paciente paciente) {
         System.out.println("\n--- Atualizar Histórico Médico ---");
 
@@ -172,6 +196,10 @@ public class MenuHistoricoMedico {
         System.out.println("Dados de saúde do paciente " + paciente.getNomeCompleto() + " atualizados com sucesso!");
     }
 
+    /**
+     * Submenu para adicionar ou remover cirurgias do histórico do paciente.
+     * @param paciente paciente a ser modificado.
+     */
     private void atualizarCirurgias(Paciente paciente) {
         System.out.println("Deseja adicionar ou remover uma cirurgia do cadastro?");
         System.out.println("1 - Adicionar");
@@ -199,6 +227,10 @@ public class MenuHistoricoMedico {
         }
     }
 
+    /**
+     * Submenu para adicionar ou remover alergias do histórico do paciente.
+     * @param paciente paciente a ser modificado.
+     */
     private void atualizarAlergias(Paciente paciente) {
         System.out.println("Deseja adicionar ou remover uma alergia do cadastro?");
         System.out.println("1 - Adicionar");

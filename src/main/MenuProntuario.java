@@ -7,18 +7,37 @@ import models.Paciente;
 import models.Prontuario;
 import services.MedicoService;
 
+/**
+ * Menu interativo para gerenciamento de prontuários médicos.
+ * Permite cadastrar, atualizar, remover e visualizar o histórico médico dos pacientes.
+ */
 public class MenuProntuario {
 
-    private Scanner leitura;
-    private MedicoService medicoService;
-    private Medico medicoLogin;
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio do médico. */
+    private final MedicoService medicoService;
+    
+    /** Médico atualmente autenticado no sistema. */
+    private final Medico medicoLogin;
 
+    /**
+     * Cria o menu de prontuários.
+     * @param leitura Scanner de entrada.
+     * @param medicoService Serviço do médico.
+     * @param medicoLogin Médico logado que gerencia os prontuários.
+     */
     public MenuProntuario(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         this.leitura = leitura;
         this.medicoService = medicoService;
         this.medicoLogin = medicoLogin;
     }
 
+    /**
+     * Exibe o menu principal de prontuários e processa as opções escolhidas.
+     * Exige a busca prévia de um paciente pelo CPF para liberar as operações.
+     */
     public void exibir() {
         System.out.println("\n--- GERENCIAR PRONTUÁRIOS ---");
         System.out.print("Digite o CPF do paciente: ");
@@ -78,6 +97,10 @@ public class MenuProntuario {
         } while (opcao != 0);
     }
 
+    /**
+     * Coleta os dados e registra um novo prontuário para o paciente informado.
+     * @param pacienteProntuario paciente que receberá o prontuário.
+     */
     private void cadastrarProntuario(Paciente pacienteProntuario) {
         System.out.print("Digite o id do novo prontuário: ");
         int id = leitura.nextInt();
@@ -112,6 +135,10 @@ public class MenuProntuario {
         System.out.println("Prontuário com id " + id + " cadastrado com sucesso!");
     }
 
+    /**
+     * Busca um prontuário pelo ID e permite a atualização de seus dados.
+     * @param id identificador único do prontuário.
+     */
     private void atualizarProntuario(int id) {
         System.out.println("\n--- Atualizar Prontuário com ID " + id + " ---");
 
@@ -139,12 +166,12 @@ public class MenuProntuario {
                     atualizarSintomas(prontuario);
                     break;
                 case 2:
-                    System.out.print("Digite o diagnóstico");
+                    System.out.print("Digite o diagnóstico: ");
                     String diagnostico = leitura.nextLine();
                     medicoService.atualizarDiagnostico(prontuario, diagnostico);
                     break;
                 case 3:
-                    System.out.print("Digite a preescrição");
+                    System.out.print("Digite a preescrição: ");
                     String preescricao = leitura.nextLine();
                     medicoService.atualizarPreescricao(prontuario, preescricao);
                     break;
@@ -156,6 +183,10 @@ public class MenuProntuario {
         System.out.println("Prontuário com ID " + id + " atualizado com sucesso!");
     }
 
+    /**
+     * Submenu para adicionar ou remover sintomas de um prontuário específico.
+     * @param prontuario prontuário a ser modificado.
+     */
     private void atualizarSintomas(Prontuario prontuario) {
         System.out.println("Deseja adicionar ou remover um sintoma?");
         System.out.println("1 - Adicionar");
@@ -165,6 +196,7 @@ public class MenuProntuario {
         System.out.print("Escolha uma opção: ");
         int opcaoSintoma = leitura.nextInt();
         leitura.nextLine();
+        
         if (opcaoSintoma == 0) {
             return;
         }

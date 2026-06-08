@@ -7,23 +7,43 @@ import services.GerenciadorMensagensService;
 import services.MedicoService;
 import services.SecretariaService;
 
+/**
+ * Menu principal do sistema.
+ * Responsável por direcionar o usuário para os submenus específicos de secretária, médico ou gerenciamento de mensagens.
+ */
 public class MenuPrincipal {
 
-    private Scanner leitura;
-    private SecretariaService secretariaService;
-    private MedicoService medicoService;
-    private GerenciadorMensagensService gerenciadorMensagensService;
-    private Secretaria secretaria;
-
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio da secretária. */
+    private final SecretariaService secretariaService;
+    
+    /** Serviço com a lógica de negócio do médico. */
+    private final MedicoService medicoService;
+    
+    /** Serviço responsável pelo envio de mensagens e lembretes. */
+    private final GerenciadorMensagensService gerenciadorMensagensService;
+   
+    /**
+     * Cria o menu principal do sistema.
+     * @param leitura Scanner de entrada.
+     * @param secretariaService Serviço da secretária.
+     * @param medicoService Serviço do médico.
+     * @param gerenciadorMensagensService Serviço de envio de mensagens.
+     * @param secretaria Secretária padrão do sistema.
+     */
     public MenuPrincipal(Scanner leitura, SecretariaService secretariaService, MedicoService medicoService,
                          GerenciadorMensagensService gerenciadorMensagensService, Secretaria secretaria) {
         this.leitura = leitura;
         this.secretariaService = secretariaService;
         this.medicoService = medicoService;
         this.gerenciadorMensagensService = gerenciadorMensagensService;
-        this.secretaria = secretaria;
     }
 
+    /**
+     * Exibe as opções do menu principal e gerencia a navegação para os demais submenus do sistema.
+     */
     public void exibir() {
         int opcao;
 

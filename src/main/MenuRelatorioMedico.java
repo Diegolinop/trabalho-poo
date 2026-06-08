@@ -8,18 +8,36 @@ import models.Paciente;
 import models.Prontuario;
 import services.MedicoService;
 
+/**
+ * Menu responsável pela geração de documentos e relatórios médicos.
+ * Permite a emissão de receitas, atestados, declarações e consultas de atendimentos.
+ */
 public class MenuRelatorioMedico {
 
-    private Scanner leitura;
-    private MedicoService medicoService;
-    private Medico medicoLogin;
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio do médico. */
+    private final MedicoService medicoService;
+    
+    /** Médico atualmente autenticado no sistema. */
+    private final Medico medicoLogin;
 
+    /**
+     * Cria o menu de relatórios médicos.
+     * @param leitura Scanner de entrada.
+     * @param medicoService Serviço do médico.
+     * @param medicoLogin Médico logado que está gerando os relatórios.
+     */
     public MenuRelatorioMedico(Scanner leitura, MedicoService medicoService, Medico medicoLogin) {
         this.leitura = leitura;
         this.medicoService = medicoService;
         this.medicoLogin = medicoLogin;
     }
 
+    /**
+     * Exibe as opções de relatórios disponíveis e processa a escolha do usuário.
+     */
     public void exibir() {
         System.out.println("\n--- GERAR RELATÓRIOS MÉDICOS ---");
 
@@ -50,49 +68,70 @@ public class MenuRelatorioMedico {
         }
     }
 
+    /**
+     * Coleta os dados necessários e gera uma receita médica para o paciente.
+     */
     private void gerarReceita() {
         System.out.print("Digite o CPF do paciente para receita: ");
         String cpfReceita = leitura.nextLine();
         Paciente pacienteReceita = medicoService.buscarPacientePorCpf(cpfReceita);
+        
         if (pacienteReceita == null) {
             System.out.println("Não foi encontrado paciente com o cpf digitado");
             return;
         }
+        
         System.out.print("Digite a prescrição para imprimir na receita: ");
         System.out.println("\n" + medicoService.gerarReceita(medicoLogin, pacienteReceita, leitura.nextLine()));
     }
 
+    /**
+     * Coleta os dados necessários e gera um atestado médico.
+     */
     private void gerarAtestado() {
         System.out.print("Digite o CPF do paciente para o atestado: ");
         String cpfRAtestado = leitura.nextLine();
         Paciente pacienteAtestado = medicoService.buscarPacientePorCpf(cpfRAtestado);
+        
         if (pacienteAtestado == null) {
             System.out.println("Não foi encontrado paciente com o cpf digitado");
             return;
         }
+        
         System.out.print("Dias de repouso: ");
         int dias = leitura.nextInt();
         leitura.nextLine();
+        
         System.out.print("Motivo/CID: ");
         System.out.println("\n" + medicoService.gerarAtestado(medicoLogin, pacienteAtestado, dias, leitura.nextLine()));
     }
 
+    /**
+     * Coleta os dados necessários e gera uma declaração de comparecimento para um acompanhante.
+     */
     private void gerarDeclaracaoAcompanhamento() {
         System.out.print("Digite o CPF do paciente para realizar a declaração de acompanhante: ");
         String cpfAcompanhado = leitura.nextLine();
         Paciente pacienteAcompanhado = medicoService.buscarPacientePorCpf(cpfAcompanhado);
+        
         if (pacienteAcompanhado == null) {
             System.out.println("Não foi encontrado paciente com o cpf digitado");
             return;
         }
+        
         System.out.print("Nome do acompanhante: ");
         String nomeAcompanhante = leitura.nextLine();
+        
         System.out.print("Data da consulta: ");
         String dataConsulta = leitura.nextLine();
+        
         System.out.println("\n" + medicoService.gerarDeclaracaoAcompanhamento(
                 medicoLogin, pacienteAcompanhado, nomeAcompanhante, dataConsulta));
     }
 
+    /**
+     * Solicita um mês e ano específicos e imprime a lista de atendimentos realizados pelo médico.
+     */
     private void imprimirAtendimentosMes() {
         System.out.print("Digite o mês/ano para consultar (ex: 06/2026): ");
         String mesAno = leitura.nextLine();

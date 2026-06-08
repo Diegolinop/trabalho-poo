@@ -9,17 +9,32 @@ import models.Paciente;
 import models.Secretaria;
 import services.SecretariaService;
 
+/**
+ * Menu interativo exclusivo para a secretária.
+ * Responsável por gerenciar pacientes, agendar consultas e gerar relatórios.
+ */
 public class MenuSecretaria {
+    
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio da secretária. */
+    private final SecretariaService secretariaService;
 
-    private Scanner leitura;
-    private SecretariaService secretariaService;
-    private Secretaria secretaria;
-
+    /**
+     * Cria o menu da secretária.
+     * @param leitura Scanner de entrada.
+     * @param secretariaService Serviço da secretária.
+     */
     public MenuSecretaria(Scanner leitura, SecretariaService secretariaService) {
         this.leitura = leitura;
         this.secretariaService = secretariaService;
     }
 
+    /**
+     * Exibe o menu principal da secretária e processa as opções escolhidas.
+     * Requer a matrícula da secretária para liberar o acesso.
+     */
     public void exibir() {
         System.out.println("\nInsira a matrícula da secretária para obter acesso ao sistema: ");
         String matriculaSecretaria = leitura.nextLine();
@@ -85,6 +100,9 @@ public class MenuSecretaria {
         } while (opcao != 0);
     }
 
+    /**
+     * Coleta os dados e realiza o cadastro de um novo paciente.
+     */
     private void cadastrarPaciente() {
         System.out.println("\n--- CADASTRAR PACIENTE ---");
         System.out.print("CPF: ");
@@ -93,12 +111,15 @@ public class MenuSecretaria {
         String nome = leitura.nextLine();
         System.out.print("Sobrenome: ");
         String sobrenome = leitura.nextLine();
+        
         System.out.print("Telefone (deixe em branco se não tiver): ");
         String telefone = leitura.nextLine();
         telefone = telefone.isBlank() ? null : telefone;
+        
         System.out.print("Email (deixe em branco se não tiver): ");
         String email = leitura.nextLine();
         email = email.isBlank() ? null : email;
+        
         System.out.print("Endereço: ");
         String endereco = leitura.nextLine();
         System.out.print("Tipo de Convênio (Particular / Plano de Saúde): ");
@@ -114,6 +135,10 @@ public class MenuSecretaria {
         }
     }
 
+    /**
+     * Exibe a lista de pacientes cadastrados no sistema.
+     * @param pacientes lista de pacientes.
+     */
     private void listarPacientes(List<Paciente> pacientes) {
         System.out.println("\n--- LISTA DE PACIENTES ---");
         if (pacientes.isEmpty()) {
@@ -128,6 +153,9 @@ public class MenuSecretaria {
         }
     }
 
+    /**
+     * Busca um paciente pelo CPF e permite a atualização de seus dados.
+     */
     private void atualizarPaciente() {
         System.out.println("\n--- ATUALIZAR PACIENTE ---");
         System.out.print("Digite o CPF do paciente a ser atualizado: ");
@@ -192,6 +220,9 @@ public class MenuSecretaria {
         } while (opcao != 0);
     }
 
+    /**
+     * Coleta os dados necessários e realiza o agendamento de uma nova consulta.
+     */
     private void agendarConsulta() {
         System.out.println("\n--- AGENDAR CONSULTA ---");
         if (!secretariaService.existemMedicosEPacientesCadastrados()) {
@@ -223,6 +254,10 @@ public class MenuSecretaria {
         secretariaService.agendarConsulta(novaConsulta);
     }
 
+    /**
+     * Busca e permite a seleção de uma consulta vinculada ao CPF de um paciente.
+     * @return consulta selecionada ou null se a operação for cancelada.
+     */
     private Consulta selecionarConsultaPaciente() {
         System.out.print("Digite o CPF do paciente para localizar a consulta: ");
         List<Consulta> consultasDoPaciente = secretariaService.buscarConsultasPorCpfPaciente(leitura.nextLine());
@@ -260,6 +295,9 @@ public class MenuSecretaria {
         } while (true);
     }
 
+    /**
+     * Permite alterar os dados de uma consulta agendada.
+     */
     private void atualizarConsulta() {
         System.out.println("\n--- ATUALIZAR CONSULTA ---");
         Consulta consulta = selecionarConsultaPaciente();
@@ -320,6 +358,9 @@ public class MenuSecretaria {
         } while (opcao != 0);
     }
 
+    /**
+     * Realiza o cancelamento de uma consulta agendada.
+     */
     private void cancelarConsulta() {
         System.out.println("\n--- CANCELAR CONSULTA ---");
         Consulta consulta = selecionarConsultaPaciente();
@@ -329,6 +370,9 @@ public class MenuSecretaria {
         }
     }
 
+    /**
+     * Exibe opções de filtros e gera o relatório de consultas para um determinado dia.
+     */
     private void gerarRelatorioConsultas() {
         System.out.println("\n--- GERAR RELATÓRIO DE CONSULTAS ---");
         System.out.print("Digite a data do dia seguinte (dd/mm/aaaa): ");
@@ -376,6 +420,12 @@ public class MenuSecretaria {
         } while (opcaoRelatorio < 0 || opcaoRelatorio > 3);
     }
 
+    /**
+     * Imprime na tela o relatório formatado das consultas.
+     * @param diaSeguinte data do relatório.
+     * @param filtro descrição do filtro aplicado.
+     * @param consultas lista de consultas a serem exibidas.
+     */
     private void imprimirRelatorioConsultas(String diaSeguinte, String filtro, List<Consulta> consultas) {
         System.out.println("\n--- RELATÓRIO DE CONSULTAS PARA " + diaSeguinte + " ---");
         System.out.println("Filtro: " + filtro);
@@ -403,6 +453,11 @@ public class MenuSecretaria {
         }
     }
 
+    /**
+     * Formata a exibição de um contato, retornando aviso caso esteja vazio.
+     * @param contato contato a ser verificado.
+     * @return contato ou "não cadastrado".
+     */
     private String mostrarContato(String contato) {
         if (contato == null || contato.isBlank()) {
             return "não cadastrado";

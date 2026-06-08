@@ -7,16 +7,32 @@ import models.Medico;
 import models.Paciente;
 import services.MedicoService;
 
+/**
+ * Menu interativo exclusivo para o médico.
+ * Controla o acesso aos dados dos pacientes, histórico médico, prontuários e relatórios.
+ */
 public class MenuMedico {
 
-    private Scanner leitura;
-    private MedicoService medicoService;
+    /** Scanner para leitura de dados do usuário. */
+    private final Scanner leitura;
+    
+    /** Serviço com a lógica de negócio do médico. */
+    private final MedicoService medicoService;
 
+    /**
+     * Cria o menu do médico.
+     * @param leitura Scanner de entrada.
+     * @param medicoService Serviço do médico.
+     */
     public MenuMedico(Scanner leitura, MedicoService medicoService) {
         this.leitura = leitura;
         this.medicoService = medicoService;
     }
 
+    /**
+     * Exibe o menu do médico e processa as opções escolhidas.
+     * Exige a inserção do CRM para validar o acesso ao sistema.
+     */
     public void exibir() {
         System.out.println("\nInsira o crm do médico para obter acesso ao sistema: ");
         String crmMedico = leitura.nextLine();
@@ -63,6 +79,10 @@ public class MenuMedico {
         } while (opcao != 0);
     }
 
+    /**
+     * Exibe a lista de pacientes cadastrados no sistema.
+     * @param pacientes lista de pacientes.
+     */
     private void listarPacientes(List<Paciente> pacientes) {
         System.out.println("\n--- LISTA DE PACIENTES ---");
         if (pacientes.isEmpty()) {
