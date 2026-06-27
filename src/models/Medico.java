@@ -1,5 +1,6 @@
 package models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,30 +10,44 @@ import java.util.List;
  * informações profissionais como CRM e especialidade,
  * além de gerenciar seus prontuários.
  */
+@Entity
+@Table(name = "MEDICO")
 public class Medico extends Pessoa {
 
     /**
      * Registro do conselho de medicina do médico - identificador único do médico.
      */
-    private final String crm;
-    
-    /** Especialidade médica do profissional. */
+    @Column(length = 20, unique = true)
+    private String crm;
+
+    /**
+     * Especialidade médica do profissional.
+     */
     private String especialidade;
-    
-    /** Lista de prontuários registrados por este médico. */
-    private final List<Prontuario> prontuarios;
+
+    /**
+     * Lista de prontuários registrados por este médico.
+     */
+    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Prontuario> prontuarios;
+
+    /**
+     * Construtor padrão vazio exigido pela especificação do JPA.
+     */
+    public Medico() {
+    }
 
     /**
      * Cria um novo médico com todos os dados pessoais e profissionais.
      *
-     * @param cpf CPF do médico no formato XXX.XXX.XXX-XX.
-     * @param nome Primeiro nome.
-     * @param sobrenome Sobrenome.
-     * @param telefone Telefone de contato.
-     * @param email E-mail de contato.
-     * @param endereco Endereço residencial.
+     * @param cpf           CPF do médico no formato XXX.XXX.XXX-XX.
+     * @param nome          Primeiro nome.
+     * @param sobrenome     Sobrenome.
+     * @param telefone      Telefone de contato.
+     * @param email         E-mail de contato.
+     * @param endereco      Endereço residencial.
      * @param especialidade Especialidade médica.
-     * @param crm Número do CRM.
+     * @param crm           Número do CRM.
      */
     public Medico(String cpf, String nome, String sobrenome, String telefone, String email, String endereco, String especialidade, String crm) {
         super(cpf, nome, sobrenome, telefone, email, endereco);
@@ -40,80 +55,59 @@ public class Medico extends Pessoa {
         this.especialidade = especialidade;
         this.prontuarios = new ArrayList<>();
     }
-    
+
     /**
      * Retorna a especialidade médica do profissional.
+     *
      * @return especialidade do médico.
      */
     public String getEspecialidade() {
         return this.especialidade;
     }
-    
+
     /**
      * Define a especialidade médica do profissional.
+     *
      * @param especialidade nova especialidade.
      */
     public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
     }
-    
+
     /**
      * Retorna o CRM do médico.
+     *
      * @return número do CRM.
      */
     public String getCrm() {
         return this.crm;
     }
-    
+
     /**
      * Retorna uma cópia da lista de prontuários registrados pelo médico.
+     *
      * @return lista de prontuários.
      */
     public List<Prontuario> getProntuarios() {
         return new ArrayList<>(this.prontuarios);
     }
-    
+
     /**
      * Adiciona um prontuário à lista do médico.
+     *
      * @param prontuario prontuário a ser adicionado.
      */
     public void adicionarProntuario(Prontuario prontuario) {
         this.prontuarios.add(prontuario);
-    } 
-    
+    }
+
     /**
      * Remove um prontuário da lista do médico.
+     *
      * @param prontuario prontuário a ser removido.
      */
     public void removerProntuario(Prontuario prontuario) {
         this.prontuarios.remove(prontuario);
     }
 
-    /**
-     * Retorna o número total de atendimentos realizados pelo médico.
-     * @return quantidade de prontuários associados.
-     */
-    public int getTotalAtendimentos() {
-        return this.prontuarios.size();
-    }
-
-    /**
-     * Gera um relatório do fluxo de clientes do médico.
-     * @return String formatada com os atendimentos.
-     */
-    public String getFluxoClientes() {
-        StringBuilder fluxo = new StringBuilder();
-        fluxo.append("--- FLUXO DE ATENDIMENTOS ---\n");
-        fluxo.append("Total de atendimentos: ").append(getTotalAtendimentos()).append("\n");
-        
-        if (this.prontuarios.isEmpty()) {
-            fluxo.append("Nenhum atendimento registrado.\n");
-        } else {
-            for (Prontuario prontuario : this.prontuarios) {
-                fluxo.append("- Paciente: ").append(prontuario.getPaciente().getNomeCompleto())
-                     .append(" | Data: ").append(prontuario.getData()).append("\n");
-            }
-        }
-        return fluxo.toString();
-    }
 }

@@ -7,10 +7,14 @@ import models.Secretaria;
 import repositories.*;
 import services.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  * Classe principal responsável por iniciar a aplicação Saúde e Cia.
  * * Ela realiza a configuração inicial do sistema, instanciando os repositórios,
- * os serviços e cadastrando dados iniciais de funcionários. Por fim, 
+ * os serviços e cadastrando dados iniciais de funcionários. Por fim,
  * inicializa e exibe o menu principal para a interação com o usuário.
  */
 public class SaudeCia {
@@ -28,12 +32,12 @@ public class SaudeCia {
         MedicoRepository medicoRepository = new MedicoRepository();
         SecretariaRepository secretariaRepository = new SecretariaRepository();
         ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
-        
+
         // Inicializa os serviços injetando as dependências dos repositórios.
         SecretariaService secretariaService = new SecretariaService(pacienteRepository, consultaRepository, medicoRepository, secretariaRepository);
         MedicoService medicoService = new MedicoService(medicoRepository, prontuarioRepository, pacienteRepository);
         GerenciadorMensagensService gerenciadorMensagensService = new GerenciadorMensagensService(consultaRepository);
-        
+
         // Instancia os dados de uma secretária.
         Secretaria secretaria = new Secretaria(
                 "123.456.789-00",
@@ -44,7 +48,7 @@ public class SaudeCia {
                 "Rua XXX, 123",
                 "SEC-100"
         );
-        
+
         // Instancia os dados de uma segunda secretária.
         Secretaria secretaria02 = new Secretaria(
                 "777.888.999-00",
@@ -55,7 +59,7 @@ public class SaudeCia {
                 "Rua XXX, 123",
                 "SEC-110"
         );
-            
+
         // Instancia os dados mockados de um médico.
         Medico medicoNovo = new Medico(
                 "111.222.333-00",
@@ -72,7 +76,7 @@ public class SaudeCia {
         medicoService.cadastrarMedico(medicoNovo);
         secretariaService.cadastrarSecretaria(secretaria);
         secretariaService.cadastrarSecretaria(secretaria02);
-        
+
         // Prepara as ferramentas de entrada e configura o menu.
         Scanner leitura = new Scanner(System.in);
         MenuPrincipal menuPrincipal = new MenuPrincipal(
@@ -81,8 +85,8 @@ public class SaudeCia {
                 medicoService,
                 gerenciadorMensagensService
         );
-        
-       // Inicia a execução do sistema exibindo a tela principal.
+
+        // Inicia a execução do sistema exibindo a tela principal.
         menuPrincipal.exibir();
     }
 }

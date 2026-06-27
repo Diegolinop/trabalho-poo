@@ -2,36 +2,45 @@ package repositories;
 
 import models.Secretaria;
 
+import java.util.List;
+
 /**
  * Repositório de secretárias. Oferece buscas por CPF e por matrícula.
  */
 public class SecretariaRepository extends Repository<Secretaria> {
-    
+
+    public SecretariaRepository() {
+        super(Secretaria.class);
+    }
+
     /**
      * Busca uma secretária pelo CPF.
+     *
      * @param cpf CPF no formato XXX.XXX.XXX-XX.
      * @return secretária encontrada ou null.
      */
     public Secretaria buscarPorCpf(String cpf) {
-        for (Secretaria secretaria : getElementos()) {
-            if (secretaria.getCpf().equals(cpf)) {
-                return secretaria;
-            }
+        try {
+            return em.find(Secretaria.class, cpf);
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
-    
+
     /**
      * Busca uma secretária pela matrícula.
+     *
      * @param matricula matrícula no formato SEC-XXX.
      * @return secretária encontrada ou null.
      */
     public Secretaria buscarPorMatricula(String matricula) {
-        for (Secretaria secretaria : getElementos()) {
-            if (secretaria.getMatricula().equals(matricula)) {
-                return secretaria;
-            }
+        try {
+            List<Secretaria> resultados = em.createQuery("SELECT s FROM Secretaria s WHERE s.matricula = :matricula", Secretaria.class)
+                    .setParameter("matricula", matricula)
+                    .getResultList();
+            return resultados.isEmpty() ? null : resultados.getFirst();
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 }

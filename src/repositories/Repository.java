@@ -1,59 +1,92 @@
 package repositories;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 /**
  * Classe genérica abstrata que serve de base para todos os repositórios do sistema.
- * Armazena elementos em memória primária usando uma lista interna, oferecendo 
+ * Armazena elementos em memória primária usando uma lista interna, oferecendo
  * operações básicas de persistência.
  *
  * @param <T> tipo do elemento gerenciado pelo repositório.
  */
 public abstract class Repository<T> {
 
-    /** Lista interna de elementos armazenados em memória. */
-    private final List<T> elementos;
+    private final Class<T> classeEntidade;
+    protected final EntityManagerFactory emf;
+    protected final EntityManager em;
 
     /**
      * Inicializa o repositório com uma lista vazia.
      */
-    public Repository() {
-        this.elementos = new ArrayList<>();
+    public Repository(Class<T> classeEntidade) {
+        this.classeEntidade = classeEntidade;
+        this.emf = Persistence.createEntityManagerFactory("SaudeCiaPU");
+        this.em = emf.createEntityManager();
     }
 
     /**
      * Adiciona um elemento ao repositório.
+     *
      * @param elemento elemento a ser salvo.
      */
     public void salvar(T elemento) {
-        elementos.add(elemento);
+        em.getTransaction().begin();
+        em.persist(elemento);
+        em.getTransaction().commit();
     }
 
     /**
      * Remove um elemento do repositório.
+     *
      * @param elemento elemento a ser removido.
      * @return true se removido com sucesso, false se não encontrado.
      */
     public boolean remover(T elemento) {
-        return elementos.remove(elemento);
+        try {
+            em.getTransaction().begin();
+            T elementoGerido = em.merge(elemento);
+            em.remove(elementoGerido);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            return false;
+        }
     }
 
     /**
      * Retorna uma cópia da lista com todos os elementos do repositório.
+     *
      * @return lista de todos os elementos.
      */
     public List<T> buscarTodos() {
-        return new ArrayList<>(elementos);
+        return em.createQuery("SELECT e FROM " + classeEntidade.getSimpleName() + " e", classeEntidade).getResultList();
     }
 
     /**
      * Retorna uma cópia da lista interna para uso nas subclasses.
      * Protege a lista original contra modificações externas.
+     *
      * @return cópia da lista de elementos.
      */
     protected List<T> getElementos() {
-        return new ArrayList<>(elementos);
+        return buscarTodos();
+    }
+
+    /**
+     * Fecha as conexões do EntityManager e EntityManagerFactory de maneira limpa.
+     */
+    public void fechar() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }
-
