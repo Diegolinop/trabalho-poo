@@ -194,6 +194,7 @@ public class SecretariaService {
      */
     public void atualizarNomePaciente(Paciente paciente, String nome) {
         paciente.setNome(nome);
+        pacienteRepository.atualizar(paciente);
     }
     
     /**
@@ -203,6 +204,7 @@ public class SecretariaService {
      */
     public void atualizarSobrenomePaciente(Paciente paciente, String sobrenome) {
         paciente.setSobrenome(sobrenome);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -212,6 +214,7 @@ public class SecretariaService {
      */
     public void atualizarTelefonePaciente(Paciente paciente, String telefone) {
         paciente.setTelefone(telefone);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -221,6 +224,7 @@ public class SecretariaService {
      */
     public void atualizarEmailPaciente(Paciente paciente, String email) {
         paciente.setEmail(email);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -230,6 +234,7 @@ public class SecretariaService {
      */
     public void atualizarEnderecoPaciente(Paciente paciente, String endereco) {
         paciente.setEndereco(endereco);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -239,6 +244,7 @@ public class SecretariaService {
      */
     public void atualizarTipoConvenioPaciente(Paciente paciente, String tipoConvenio) {
         paciente.setTipoConvenio(tipoConvenio);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -248,6 +254,7 @@ public class SecretariaService {
      */
     public void atualizarDataNascimentoPaciente(Paciente paciente, String dataNascimento) {
         paciente.setDataNascimento(dataNascimento);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -267,6 +274,7 @@ public class SecretariaService {
      */
     public void atualizarDataConsulta(Consulta consulta, String data) {
         consulta.setData(data);
+        consultaRepository.atualizar(consulta);
     }
     
     /**
@@ -276,6 +284,7 @@ public class SecretariaService {
      */
     public void atualizarHorarioConsulta(Consulta consulta, String horario) {
         consulta.setHorario(horario);
+        consultaRepository.atualizar(consulta);
     }
     
     /**
@@ -285,6 +294,7 @@ public class SecretariaService {
      */
     public void atualizarMedicoConsulta(Consulta consulta, Medico medico) {
         consulta.setMedico(medico);
+        consultaRepository.atualizar(consulta);
     }
     
     /**
@@ -294,6 +304,7 @@ public class SecretariaService {
      */
     public void atualizarTipoConsulta(Consulta consulta, String tipo) {
         consulta.setTipo(tipo);
+        consultaRepository.atualizar(consulta);
     }
     
     /**

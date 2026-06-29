@@ -35,6 +35,12 @@ public abstract class Repository<T> {
         em.persist(elemento);
         em.getTransaction().commit();
     }
+    
+    public void atualizar(T elemento) {
+        em.getTransaction().begin();
+        em.merge(elemento);
+        em.getTransaction().commit();
+    }
 
     /**
      * Remove um elemento do repositório.

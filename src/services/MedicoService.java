@@ -104,6 +104,8 @@ public class MedicoService {
         historicoMedico.setColesterol(colesterol);
         historicoMedico.setDiabetes(diabetes);
         historicoMedico.setDoencaCardiaca(doencaCardiaca);
+        
+        pacienteRepository.atualizar(paciente);
     }
     
     /**
@@ -114,6 +116,7 @@ public class MedicoService {
     public void atualizarFumaPaciente(Paciente paciente, boolean fuma) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setFuma(fuma);
+        pacienteRepository.atualizar(paciente);
     }
     
     /**
@@ -124,6 +127,7 @@ public class MedicoService {
     public void atualizarBebePaciente(Paciente paciente, boolean bebe) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setBebe(bebe);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -134,6 +138,7 @@ public class MedicoService {
     public void atualizarColesterolPaciente(Paciente paciente, boolean colesterol) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setColesterol(colesterol);
+        pacienteRepository.atualizar(paciente);
     }
     
     /**
@@ -144,6 +149,7 @@ public class MedicoService {
     public void atualizarDiabetesPaciente(Paciente paciente, boolean diabetes) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setDiabetes(diabetes);
+        pacienteRepository.atualizar(paciente);
     }
     
     
@@ -155,6 +161,7 @@ public class MedicoService {
     public void atualizarDoencaCardiacaPaciente(Paciente paciente, boolean doencaCardiaca) {
         HistoricoMedico historicoMedico = paciente.getHistoricoMedico();
         historicoMedico.setDoencaCardiaca(doencaCardiaca);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -164,6 +171,7 @@ public class MedicoService {
     public void removerHistoricoMedico(Paciente paciente) {
         if (verificarHistoricoMedico(paciente)) {
             paciente.setHistoricoMedico(null);
+            pacienteRepository.atualizar(paciente);
         }
     }
 
@@ -174,6 +182,7 @@ public class MedicoService {
      */
     public void adicionarCirurgiaPaciente(Paciente paciente, String cirurgia) {
         paciente.getHistoricoMedico().adicionarCirurgia(cirurgia);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -183,7 +192,9 @@ public class MedicoService {
      * @return true se foi removida, false se não existia.
      */
     public boolean removerCirurgiaPaciente(Paciente paciente, String cirurgia) {
-        return paciente.getHistoricoMedico().removerCirurgia(cirurgia);
+        boolean removido = paciente.getHistoricoMedico().removerCirurgia(cirurgia);
+        pacienteRepository.atualizar(paciente);
+        return removido;
     }
 
     /**
@@ -193,6 +204,7 @@ public class MedicoService {
      */
     public void adicionarAlergiaPaciente(Paciente paciente, String alergia) {
         paciente.getHistoricoMedico().adicionarAlergia(alergia);
+        pacienteRepository.atualizar(paciente);
     }
 
     /**
@@ -202,7 +214,9 @@ public class MedicoService {
      * @return true se foi removida, false se não existia.
      */
     public boolean removerAlergiaPaciente(Paciente paciente, String alergia) {
-        return paciente.getHistoricoMedico().removerAlergia(alergia);
+        boolean removido = paciente.getHistoricoMedico().removerAlergia(alergia);
+        pacienteRepository.atualizar(paciente);
+        return removido;
     }
     
     /**
@@ -292,7 +306,9 @@ public class MedicoService {
      * @return true se foi removido, false se não existia.
      */
     public boolean removerSintomaProntuario(Prontuario prontuario, String sintoma) {
-        return prontuario.removerSintoma(sintoma);
+        boolean removido = prontuario.removerSintoma(sintoma);
+        prontuarioRepository.atualizar(prontuario);
+        return removido;
     }
     
     /**
@@ -302,6 +318,7 @@ public class MedicoService {
      */
     public void adicionarSintomaProntuario(Prontuario prontuario, String sintoma) {
         prontuario.adicionarSintoma(sintoma);
+        prontuarioRepository.atualizar(prontuario);
     }
     
     /**
@@ -311,6 +328,7 @@ public class MedicoService {
      */
     public void atualizarDiagnostico(Prontuario prontuario, String diagnoistico) {
         prontuario.setDiagnostico(diagnoistico);
+        prontuarioRepository.atualizar(prontuario);
     }
     
     /**
@@ -320,6 +338,7 @@ public class MedicoService {
      */
     public void atualizarPreescricao(Prontuario prontuario, String preescricao) {
         prontuario.setPrescricao(preescricao);
+        prontuarioRepository.atualizar(prontuario);
     }
     
     /**
