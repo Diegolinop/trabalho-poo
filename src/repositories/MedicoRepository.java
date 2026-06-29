@@ -1,7 +1,7 @@
 package repositories;
 
 import models.Medico;
-
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class MedicoRepository extends Repository<Medico> {
 
-    public MedicoRepository() {
-        super(Medico.class);
+    public MedicoRepository(EntityManager em) {
+        super(Medico.class, em);
     }
 
     /**

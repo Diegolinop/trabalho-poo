@@ -1,6 +1,7 @@
 package repositories;
 
 import models.Secretaria;
+import javax.persistence.EntityManager;
 
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
  */
 public class SecretariaRepository extends Repository<Secretaria> {
 
-    public SecretariaRepository() {
-        super(Secretaria.class);
+    public SecretariaRepository(EntityManager em) {
+        super(Secretaria.class, em);
     }
 
     /**

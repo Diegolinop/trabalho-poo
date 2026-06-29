@@ -1,14 +1,15 @@
 package repositories;
 
 import models.Paciente;
+import javax.persistence.EntityManager;
 
 /**
  * Repositório de pacientes. Oferece busca por CPF.
  */
 public class PacienteRepository extends Repository<Paciente> {
 
-    public PacienteRepository() {
-        super(Paciente.class);
+    public PacienteRepository(EntityManager em) {
+        super(Paciente.class, em);
     }
 
     /**

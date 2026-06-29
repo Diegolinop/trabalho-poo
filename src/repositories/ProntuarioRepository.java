@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.Medico;
 import models.Prontuario;
+import javax.persistence.EntityManager;
 
 /**
  * Repositório de prontuários. Oferece buscas por médico,
@@ -12,8 +13,8 @@ import models.Prontuario;
  */
 public class ProntuarioRepository extends Repository<Prontuario> {
 
-    public ProntuarioRepository() {
-        super(Prontuario.class);
+    public ProntuarioRepository(EntityManager em) {
+        super(Prontuario.class, em);
     }
 
     /**

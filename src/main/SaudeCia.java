@@ -26,12 +26,15 @@ public class SaudeCia {
      * @param args argumentos de linha de comando (não utilizados).
      */
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("SaudeCiaPU");
+        EntityManager em = emf.createEntityManager();
+        
         // Inicializa os repositórios responsáveis pelo armazenamento dos dados.
-        PacienteRepository pacienteRepository = new PacienteRepository();
-        ConsultaRepository consultaRepository = new ConsultaRepository();
-        MedicoRepository medicoRepository = new MedicoRepository();
-        SecretariaRepository secretariaRepository = new SecretariaRepository();
-        ProntuarioRepository prontuarioRepository = new ProntuarioRepository();
+        PacienteRepository pacienteRepository = new PacienteRepository(em);
+        ConsultaRepository consultaRepository = new ConsultaRepository(em);
+        MedicoRepository medicoRepository = new MedicoRepository(em);
+        SecretariaRepository secretariaRepository = new SecretariaRepository(em);
+        ProntuarioRepository prontuarioRepository = new ProntuarioRepository(em);
 
         // Inicializa os serviços injetando as dependências dos repositórios.
         SecretariaService secretariaService = new SecretariaService(pacienteRepository, consultaRepository, medicoRepository, secretariaRepository);

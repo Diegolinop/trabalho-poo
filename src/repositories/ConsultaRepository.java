@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Consulta;
+import javax.persistence.EntityManager;
 
 /**
  * Repositório de consultas. Oferece buscas específicas por data,
@@ -11,8 +12,8 @@ import models.Consulta;
  */
 public class ConsultaRepository extends Repository<Consulta> {
 
-    public ConsultaRepository() {
-        super(Consulta.class);
+    public ConsultaRepository(EntityManager em) {
+        super(Consulta.class, em);
     }
 
     /**

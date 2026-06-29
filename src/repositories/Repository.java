@@ -15,16 +15,14 @@ import java.util.List;
 public abstract class Repository<T> {
 
     private final Class<T> classeEntidade;
-    protected final EntityManagerFactory emf;
     protected final EntityManager em;
 
     /**
      * Inicializa o repositório com uma lista vazia.
      */
-    public Repository(Class<T> classeEntidade) {
+    public Repository(Class<T> classeEntidade, EntityManager em) {
         this.classeEntidade = classeEntidade;
-        this.emf = Persistence.createEntityManagerFactory("SaudeCiaPU");
-        this.em = emf.createEntityManager();
+        this.em = em;
     }
 
     /**
@@ -76,17 +74,5 @@ public abstract class Repository<T> {
      */
     protected List<T> getElementos() {
         return buscarTodos();
-    }
-
-    /**
-     * Fecha as conexões do EntityManager e EntityManagerFactory de maneira limpa.
-     */
-    public void fechar() {
-        if (em != null && em.isOpen()) {
-            em.close();
-        }
-        if (emf != null && emf.isOpen()) {
-            emf.close();
-        }
     }
 }
