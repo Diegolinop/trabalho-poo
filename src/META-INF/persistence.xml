@@ -27,7 +27,7 @@
                       value="org.apache.derby.jdbc.ClientDriver"/>
 
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:derby://localhost:1527/SaudeCia;create=true"/>
+                      value="jdbc:derby://localhost:1527/sample;create=true"/>
 
             <property name="hibernate.dialect"
                       value="org.hibernate.dialect.DerbyDialect"/>

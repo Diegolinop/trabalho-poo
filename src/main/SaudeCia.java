@@ -73,9 +73,16 @@ public class SaudeCia {
         );
 
         // Efetua o cadastro dos funcionários padrão no sistema.
-        medicoService.cadastrarMedico(medicoNovo);
-        secretariaService.cadastrarSecretaria(secretaria);
-        secretariaService.cadastrarSecretaria(secretaria02);
+        // Verifica se já existem antes de cadastrar para evitar erro de duplicidade no banco
+        if (medicoService.buscarMedicoPorCrm(medicoNovo.getCrm()) == null) {
+            medicoService.cadastrarMedico(medicoNovo);
+        }
+        if (secretariaService.buscarSecretariaPorMatricula(secretaria.getMatricula()) == null) {
+            secretariaService.cadastrarSecretaria(secretaria);
+        }
+        if (secretariaService.buscarSecretariaPorMatricula(secretaria02.getMatricula()) == null) {
+            secretariaService.cadastrarSecretaria(secretaria02);
+        }
 
         // Prepara as ferramentas de entrada e configura o menu.
         Scanner leitura = new Scanner(System.in);

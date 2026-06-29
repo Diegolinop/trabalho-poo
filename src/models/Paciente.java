@@ -34,7 +34,7 @@ public class Paciente extends Pessoa {
     /**
      * Lista de prontuários associados a este paciente.
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Prontuario> prontuarios;
 
     /**
