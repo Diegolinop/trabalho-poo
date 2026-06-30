@@ -1,6 +1,7 @@
 package main;
 
 import java.util.Scanner;
+import javax.swing.SwingUtilities;
 
 import models.Medico;
 import models.Secretaria;
@@ -97,6 +98,9 @@ public class SaudeCia {
         );
 
         // Inicia a execução do sistema exibindo a tela principal.
+        SwingUtilities.invokeLater(() -> {
+            new TelaMenuPrincipal(secretariaService, medicoService, gerenciadorMensagensService).setVisible(true);
+        });
         menuPrincipal.exibir();
     }
 }

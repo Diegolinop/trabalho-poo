@@ -70,6 +70,52 @@ public class GerenciadorMensagensService {
         }
     }
     
+    public String gerarTextoMensagens(String diaSeguinte) {
+        List<Consulta> consultasDoDia = consultaRepository.buscarPorData(diaSeguinte);
+        StringBuilder sb = new StringBuilder();
+
+        if (consultasDoDia.isEmpty()) {
+            return "Nenhuma consulta encontrada para o dia " + diaSeguinte + ".";
+        }
+
+        sb.append("--- LEMBRETES PARA ").append(diaSeguinte).append(" ---\n");
+        sb.append("Total de consultas: ").append(consultasDoDia.size()).append("\n");
+        sb.append("--------------------------------------\n");
+
+        for (Consulta consulta : consultasDoDia) {
+            Paciente paciente = consulta.getPaciente();
+            boolean temEmail = paciente.getEmail() != null && !paciente.getEmail().isBlank();
+            boolean temTelefone = paciente.getTelefone() != null && !paciente.getTelefone().isBlank();
+
+            sb.append("\nPaciente: ").append(paciente.getNomeCompleto()).append("\n");
+            sb.append("Consulta: ").append(consulta.getData())
+              .append(" às ").append(consulta.getHorario())
+              .append(" | Dr(a). ").append(consulta.getMedico().getNomeCompleto())
+              .append(" | Duração: ").append(consulta.getDuracao()).append("\n");
+
+            if (temEmail) {
+                sb.append("  [EMAIL -> ").append(paciente.getEmail()).append("]\n");
+                sb.append("  Olá, ").append(paciente.getNome())
+                  .append("! Você tem uma consulta amanhã (").append(consulta.getData())
+                  .append(") às ").append(consulta.getHorario())
+                  .append(" com Dr(a). ").append(consulta.getMedico().getNomeCompleto())
+                  .append(".\n");
+            }
+            if (temTelefone) {
+                sb.append("  [SMS -> ").append(paciente.getTelefone()).append("]\n");
+                sb.append("  Consulta amanhã (").append(consulta.getData())
+                  .append(") às ").append(consulta.getHorario())
+                  .append(" com Dr(a). ").append(consulta.getMedico().getNomeCompleto())
+                  .append(".\n");
+            }
+            if (!temEmail && !temTelefone) {
+                sb.append("  Sem contato cadastrado - lembrete não enviado.\n");
+            }
+        }
+
+        return sb.toString();
+    }
+    
     /**
      * Simula o envio de um e-mail de lembrete para o paciente.
      *

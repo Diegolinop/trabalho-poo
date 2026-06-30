@@ -391,6 +391,32 @@ public class MedicoService {
         System.out.println("--- Prescrição " + prontuario.getPrescricao() + " ---");
     }
     
+    public String gerarTextoProntuario(Medico medico, int id) {
+        Prontuario prontuario = prontuarioRepository.buscarPorMedicoEId(medico, id);
+
+        if (prontuario == null) {
+            return "O médico não possui prontuário com esse ID.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("--- PRONTUÁRIO DE ").append(prontuario.getPaciente().getNomeCompleto()).append(" ---\n");
+        sb.append("--- FEITO PELO MÉDICO ").append(medico.getNomeCompleto()).append(" ---\n");
+        sb.append("Data: ").append(prontuario.getData()).append("\n\n");
+
+        sb.append("Sintomas:\n");
+        if (prontuario.getSintomas().isEmpty()) {
+            sb.append("  Nenhum sintoma registrado.\n");
+        } else {
+            for (String sintoma : prontuario.getSintomas()) sb.append("  - ").append(sintoma).append("\n");
+        }
+
+        sb.append("\nDiagnóstico: ").append(prontuario.getDiagnostico()).append("\n");
+        sb.append("Prescrição: ").append(prontuario.getPrescricao()).append("\n");
+        sb.append("--------------------------------------");
+
+        return sb.toString();
+    }
+    
     /**
      * Exibe no console de todos os prontuários do médico.
      * @param medico médico a ter os prontuários listados.
@@ -410,7 +436,24 @@ public class MedicoService {
         System.out.println("--------------------------------------");
     }
 
-    // ======================================= 
+    public String gerarTextoListaProntuarios(Medico medico) {
+        List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
+
+        if (prontuarios.isEmpty()) {
+            return "Nenhum prontuário encontrado.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("--- PRONTUÁRIOS DE ").append(medico.getNomeCompleto()).append(" ---\n\n");
+        for (Prontuario p : prontuarios) {
+            sb.append("ID: ").append(p.getId())
+              .append(" | Paciente: ").append(p.getPaciente().getNomeCompleto())
+              .append(" | Data: ").append(p.getData()).append("\n");
+        }
+        sb.append("--------------------------------------");
+
+        return sb.toString();
+    }
     
     /**
      * Gera um relatório com todos os atendimentos do médico em um determinado mês.
