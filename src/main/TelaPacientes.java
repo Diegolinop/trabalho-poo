@@ -178,8 +178,15 @@ public class TelaPacientes extends JFrame {
                 "Confirmar remoção", JOptionPane.YES_NO_OPTION);
 
         if (confirmacao == JOptionPane.YES_OPTION) {
-            secretariaService.removerPaciente(paciente.getCpf());
-            carregarPacientes();
+            try {
+                // Tenta remover o paciente
+                secretariaService.removerPaciente(paciente.getCpf());
+                carregarPacientes();
+                JOptionPane.showMessageDialog(this, "Paciente removido com sucesso!");
+            } catch (IllegalArgumentException e) {
+                // Se der erro de vínculo, mostra na tela!
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Exclusão", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

@@ -102,6 +102,15 @@ public class SecretariaService {
         // Busca o paciente pelo CPF. 
         Paciente paciente = pacienteRepository.buscarPorCpf(cpf);
         if (paciente != null) {
+            boolean sucesso = pacienteRepository.remover(paciente);
+            
+            // Verifica se a exclusão no banco realmente funcionou
+            if (sucesso) {
+                System.out.println("Paciente removido com sucesso.");
+            } else {
+                throw new IllegalArgumentException("Erro ao remover: O paciente possui consultas ou prontuários vinculados a ele.");
+            }
+            
             pacienteRepository.remover(paciente);
             System.out.println("Paciente removido com sucesso.");
         } else {

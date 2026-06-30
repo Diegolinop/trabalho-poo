@@ -59,6 +59,7 @@ public abstract class Repository<T> {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+            e.printStackTrace();
             return false;
         }
     }

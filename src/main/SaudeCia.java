@@ -88,19 +88,9 @@ public class SaudeCia {
             secretariaService.cadastrarSecretaria(secretaria02);
         }
 
-        // Prepara as ferramentas de entrada e configura o menu.
-        Scanner leitura = new Scanner(System.in);
-        MenuPrincipal menuPrincipal = new MenuPrincipal(
-                leitura,
-                secretariaService,
-                medicoService,
-                gerenciadorMensagensService
-        );
-
         // Inicia a execução do sistema exibindo a tela principal.
         SwingUtilities.invokeLater(() -> {
             new TelaMenuPrincipal(secretariaService, medicoService, gerenciadorMensagensService).setVisible(true);
         });
-        menuPrincipal.exibir();
     }
 }
