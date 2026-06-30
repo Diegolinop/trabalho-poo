@@ -9,6 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Tela responsável pela geração de relatórios médicos do médico
+ * autenticado.
+ * Permite gerar receitas, atestados, declarações de acompanhamento e
+ * relatórios de atendimentos realizados em um mês específico.
+ */
 public class TelaRelatorioMedico extends JFrame {
 
     private final MedicoService medicoService;
@@ -22,6 +28,13 @@ public class TelaRelatorioMedico extends JFrame {
     private JButton btnAtendimentos;
     private JButton btnVoltar;
 
+    /**
+     * Constrói a tela de relatórios médicos para o médico autenticado.
+     * @param medicoService serviço utilizado para gerar os relatórios
+     *                       e consultar os dados necessários.
+     * @param medico médico autenticado para o qual os relatórios serão
+     *               gerados.
+     */
     public TelaRelatorioMedico(MedicoService medicoService, Medico medico) {
         this.medicoService = medicoService;
         this.medico = medico;
@@ -33,6 +46,11 @@ public class TelaRelatorioMedico extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Inicializa e organiza os componentes visuais da tela, incluindo os
+     * rótulos de título e médico, os botões de geração de relatórios e o
+     * layout responsável pelo posicionamento de cada elemento.
+     */
     private void initComponents() {
         lblTitulo = new JLabel("Relatórios Médicos");
         lblTitulo.setFont(new Font("Cantarell", Font.BOLD, 24));
@@ -91,6 +109,13 @@ public class TelaRelatorioMedico extends JFrame {
         pack();
     }
 
+    /**
+     * Solicita o CPF de um paciente por meio de uma caixa de diálogo e
+     * retorna o paciente correspondente, caso encontrado.
+     * @param titulo título exibido na caixa de diálogo de entrada.
+     * @return o paciente correspondente ao CPF informado, ou null caso o
+     *         usuário cancele a operação ou o paciente não seja encontrado.
+     */
     private Paciente buscarPaciente(String titulo) {
         String cpf = JOptionPane.showInputDialog(this, "Digite o CPF do paciente:",
             titulo, JOptionPane.QUESTION_MESSAGE);
@@ -104,6 +129,12 @@ public class TelaRelatorioMedico extends JFrame {
         return paciente;
     }
 
+    /**
+     * Exibe um texto em uma caixa de diálogo, utilizando uma área de
+     * texto monoespaçada e não editável, dentro de um painel rolável.
+     * @param titulo título exibido na janela de diálogo.
+     * @param texto conteúdo a ser exibido na área de texto.
+     */
     private void exibirTextoEmDialog(String titulo, String texto) {
         JTextArea area = new JTextArea(texto);
         area.setEditable(false);
@@ -115,6 +146,11 @@ public class TelaRelatorioMedico extends JFrame {
         JOptionPane.showMessageDialog(this, scroll, titulo, JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Gera uma receita médica para um paciente. 
+     * Solicita o CPF do paciente e a prescrição a ser registrada,
+     * exibindo o resultado em uma caixa de diálogo.
+     */
     private void gerarReceita() {
         Paciente paciente = buscarPaciente("Receita");
         if (paciente == null) return;
@@ -126,6 +162,12 @@ public class TelaRelatorioMedico extends JFrame {
         exibirTextoEmDialog("Receita Médica", medicoService.gerarReceita(medico, paciente, prescricao));
     }
 
+    /**
+     * Gera um atestado médico para um paciente. 
+     * Solicita o CPF dopaciente, a quantidade de dias de repouso e o
+     * motivo ou CID,exibindo o resultado em uma caixa de diálogo. Exibe
+     * uma mensagem de erro caso o número de dias informado seja inválido.
+     */
     private void gerarAtestado() {
         Paciente paciente = buscarPaciente("Atestado");
         if (paciente == null) return;
@@ -149,6 +191,11 @@ public class TelaRelatorioMedico extends JFrame {
         exibirTextoEmDialog("Atestado Médico", medicoService.gerarAtestado(medico, paciente, dias, motivo));
     }
 
+    /**
+     * Gera uma declaração de acompanhamento para um paciente.
+     * Solicita o CPF do paciente, o nome do acompanhante e a data da
+     * consulta, exibindo o resultado em uma caixa de diálogo.
+     */
     private void gerarDeclaracao() {
         Paciente paciente = buscarPaciente("Declaração de Acompanhamento");
         if (paciente == null) return;
@@ -165,6 +212,13 @@ public class TelaRelatorioMedico extends JFrame {
             medicoService.gerarDeclaracaoAcompanhamento(medico, paciente, nomeAcompanhante, dataConsulta));
     }
 
+    /**
+     * Gera um relatório com os atendimentos realizados pelo médico em
+     * um mês e ano específicos, exibindo a data, o paciente e o
+     * diagnóstico de cada atendimento em uma caixa de diálogo. 
+     * Exibe uma mensagem caso nenhum atendimento seja encontrado para
+     * o período informado.
+     */
     private void verAtendimentosMes() {
         String mesAno = JOptionPane.showInputDialog(this, "Mês/ano (ex: 06/2026):",
             "Atendimentos no Mês", JOptionPane.QUESTION_MESSAGE);

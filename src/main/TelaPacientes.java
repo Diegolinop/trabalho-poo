@@ -9,6 +9,12 @@ import java.util.List;
 import models.Paciente;
 import services.SecretariaService;
 
+/**
+ * Tela responsável pelo gerenciamento da lista de pacientes cadastrados.
+ * Exibe os pacientes em uma tabela editável, na qual a maioria dos campos
+ * pode ser alterada diretamente na célula, com exceção do CPF, que serve
+ * como chave de busca. Permite também a remoção de pacientes.
+ */
 public class TelaPacientes extends JFrame {
 
     private final SecretariaService secretariaService;
@@ -21,6 +27,13 @@ public class TelaPacientes extends JFrame {
             "CPF", "Nome", "Sobrenome", "Telefone", "Email", "Endereço", "Tipo de Convênio", "Data de Nascimento"
     };
 
+    /**
+     * Constrói a tela de gerenciamento de pacientes, montando a tabela
+     * editável, carregando os dados iniciais e configurando os botões
+     * de ação.
+     * @param secretariaService serviço utilizado para listar, atualizar
+     *                          e remover pacientes.
+     */
     public TelaPacientes(SecretariaService secretariaService) {
         super("Gerenciar Pacientes");
         this.secretariaService = secretariaService;
@@ -66,6 +79,12 @@ public class TelaPacientes extends JFrame {
         add(botoes, BorderLayout.SOUTH);
     }
 
+    /**
+     * Carrega na tabela a lista atual de todos os pacientes cadastrados.
+     * Limpa as linhas existentes antes de preencher a tabela novamente e
+     * desativa temporariamente a escuta de edição de células para evitar
+     * disparos indevidos do listener durante o recarregamento.
+     */
     private void carregarPacientes() {
         atualizandoProgramaticamente = true;
         pacientes = secretariaService.listarPacientes();
@@ -86,6 +105,15 @@ public class TelaPacientes extends JFrame {
         atualizandoProgramaticamente = false;
     }
 
+    /**
+     * Trata a edição de uma célula da tabela de pacientes, propagando a
+     * alteração para o método correspondente do serviço de acordo com a
+     * coluna editada.
+     * Ignora eventos disparados durante o recarregamento programático da
+     * tabela. Caso a atualização seja inválida, exibe uma mensagem de
+     * erro e recarrega a tabela para descartar a edição malsucedida.
+     * @param evento evento de alteração disparado pelo modelo da tabela.
+     */
     private void onCelulaEditada(TableModelEvent evento) {
         if (atualizandoProgramaticamente || evento.getType() != TableModelEvent.UPDATE) {
             return;
@@ -132,6 +160,11 @@ public class TelaPacientes extends JFrame {
         }
     }
 
+    /**
+     * Remove o paciente atualmente selecionado na tabela, mediante
+     * confirmação do usuário.
+     * Exibe uma mensagem caso nenhum paciente esteja selecionado.
+     */
     private void removerSelecionado() {
         int linha = tabela.getSelectedRow();
         if (linha < 0) {

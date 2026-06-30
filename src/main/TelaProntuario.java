@@ -8,6 +8,11 @@ import services.MedicoService;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tela responsável pelo gerenciamento dos prontuários de um médico.
+ * Permite cadastrar, atualizar, remover, exibir e listar os prontuários
+ * associados ao médico autenticado.
+ */
 public class TelaProntuario extends JFrame {
 
     private final MedicoService medicoService;
@@ -22,6 +27,13 @@ public class TelaProntuario extends JFrame {
     private JButton btnListar;
     private JButton btnVoltar;
 
+    /**
+     * Constrói a tela de gerenciamento de prontuários para o médico
+     * autenticado.
+     * @param medicoService serviço utilizado para consultar e manipular
+     *                       os prontuários do médico.
+     * @param medico médico autenticado cujos prontuários serão gerenciados.
+     */
     public TelaProntuario(MedicoService medicoService, Medico medico) {
         this.medicoService = medicoService;
         this.medico = medico;
@@ -33,6 +45,11 @@ public class TelaProntuario extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Inicializa e organiza os componentes visuais da tela, incluindo os
+     * rótulos de título e médico, os botões de ação e o layout responsável
+     * pelo posicionamento de cada elemento.
+     */
     private void initComponents() {
         lblTitulo = new JLabel("Prontuários");
         lblTitulo.setFont(new Font("Cantarell", Font.BOLD, 24));
@@ -96,6 +113,13 @@ public class TelaProntuario extends JFrame {
         pack();
     }
 
+    /**
+     * Solicita o CPF de um paciente por meio de uma caixa de diálogo e
+     * retorna o paciente correspondente, caso encontrado.
+     *
+     * @return o paciente correspondente ao CPF informado, ou null caso o
+     *         usuário cancele a operação ou o paciente não seja encontrado.
+     */
     private Paciente buscarPaciente() {
         String cpf = JOptionPane.showInputDialog(this, "Digite o CPF do paciente:",
             "Buscar Paciente", JOptionPane.QUESTION_MESSAGE);
@@ -109,6 +133,14 @@ public class TelaProntuario extends JFrame {
         return paciente;
     }
 
+    /**
+     * Solicita ao usuário o ID de um prontuário por meio de uma caixa de
+     * diálogo e converte o valor informado para um número inteiro.
+     *
+     * @param titulo título exibido na caixa de diálogo de entrada.
+     * @return o ID informado, ou null caso o usuário cancele a operação
+     *         ou informe um valor inválido.
+     */
     private Integer pedirId(String titulo) {
         String input = JOptionPane.showInputDialog(this, "Digite o ID do prontuário:", titulo, JOptionPane.QUESTION_MESSAGE);
         if (input == null) return null;
@@ -120,6 +152,13 @@ public class TelaProntuario extends JFrame {
         }
     }
 
+    /**
+     * Cadastra um novo prontuário para um paciente, associado ao médico
+     * autenticado.
+     * Solicita o paciente, o ID do prontuário, a data do atendimento,
+     * os sintomas em loop, o diagnóstico e a prescrição. Verifica
+     * previamente se o ID informado já está em uso pelo médico.
+     */
     private void cadastrarProntuario() {
         Paciente paciente = buscarPaciente();
         if (paciente == null) return;
@@ -161,6 +200,13 @@ public class TelaProntuario extends JFrame {
             "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Permite atualizar um dado específico de um prontuário existente do
+     * médico, identificado pelo ID informado.
+     * Exibe um menu de opções com os campos disponíveis para atualização:
+     * sintomas, diagnóstico ou prescrição. Exibe uma mensagem de erro caso
+     * o prontuário não seja encontrado.
+     */
     private void atualizarProntuario() {
         Integer id = pedirId("Atualizar Prontuário");
         if (id == null) return;
@@ -196,6 +242,11 @@ public class TelaProntuario extends JFrame {
         }
     }
 
+    /**
+     * Permite adicionar ou remover um sintoma do prontuário informado,
+     * conforme a ação escolhida pelo usuário.
+     * @param prontuario prontuário cujos sintomas serão gerenciados.
+     */
     private void atualizarSintomas(Prontuario prontuario) {
         String[] acoes = {"Adicionar", "Remover"};
         int acao = JOptionPane.showOptionDialog(this, "O que deseja fazer?", "Gerenciar Sintomas",
@@ -219,6 +270,11 @@ public class TelaProntuario extends JFrame {
         }
     }
 
+    /**
+     * Remove um prontuário do médico autenticado, identificado pelo ID
+     * informado, mediante confirmação do usuário. 
+     * Exibe uma mensagem de erro caso o prontuário não seja encontrado.
+     */
     private void removerProntuario() {
         Integer id = pedirId("Remover Prontuário");
         if (id == null) return;
@@ -239,6 +295,11 @@ public class TelaProntuario extends JFrame {
         JOptionPane.showMessageDialog(this, "Prontuário removido com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Exibe em uma caixa de diálogo, em formato de texto monoespaçado, os
+     * detalhes completos de um prontuário do médico, identificado pelo ID
+     * informado.
+     */
     private void mostrarProntuario() {
         Integer id = pedirId("Mostrar Prontuário");
         if (id == null) return;
@@ -255,6 +316,10 @@ public class TelaProntuario extends JFrame {
         JOptionPane.showMessageDialog(this, scroll, "Prontuário", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Exibe em uma caixa de diálogo, em formato de texto monoespaçado, a
+     * lista completa de prontuários associados ao médico autenticado.
+     */
     private void listarProntuarios() {
         String texto = medicoService.gerarTextoListaProntuarios(medico);
 

@@ -391,6 +391,15 @@ public class MedicoService {
         System.out.println("--- Prescrição " + prontuario.getPrescricao() + " ---");
     }
     
+    /**
+     * Gera o texto formatado com os detalhes completos de um prontuário
+     * de um médico, identificado pelo ID informado.
+     *
+     * @param medico médico ao qual o prontuário pertence.
+     * @param id identificador do prontuário a ser exibido.
+     * @return texto formatado com os dados do prontuário, ou uma
+     *         mensagem indicando que o prontuário não foi encontrado.
+     */
     public String gerarTextoProntuario(Medico medico, int id) {
         Prontuario prontuario = prontuarioRepository.buscarPorMedicoEId(medico, id);
 
@@ -436,6 +445,13 @@ public class MedicoService {
         System.out.println("--------------------------------------");
     }
 
+    /**
+     * Gera o texto formatado com a lista resumida de todos os
+     * prontuários associados a um médico.
+     * @param medico médico cujos prontuários serão listados.
+     * @return texto formatado com a lista de prontuários, ou uma
+     *         mensagem indicando que nenhum prontuário foi encontrado.
+     */
     public String gerarTextoListaProntuarios(Medico medico) {
         List<Prontuario> prontuarios = prontuarioRepository.buscarPorMedico(medico);
 

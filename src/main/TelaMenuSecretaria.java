@@ -7,11 +7,24 @@ import models.Paciente;
 import models.Secretaria;
 import services.SecretariaService;
 
+/**
+ * Tela que representa o menu principal de navegação da secretária.
+ * Exibe as opções de cadastrar paciente, gerenciar pacientes, gerenciar
+ * consultas e gerar relatório de consultas, para a secretária autenticada.
+ */
 public class TelaMenuSecretaria extends JFrame {
 
     private final SecretariaService secretariaService;
     private final Secretaria secretaria;
 
+    /**
+     * Constrói o menu da secretária já autenticada, recebida após a
+     * validação da matrícula em outra tela.
+     * @param secretariaService serviço utilizado para as operações
+     *                          disponíveis no menu da secretária.
+     * @param secretaria secretária autenticada, cujo nome é exibido no
+     *                   título da janela.
+     */
     public TelaMenuSecretaria(SecretariaService secretariaService, Secretaria secretaria) {
         super("Secretária - " + secretaria.getNomeCompleto());
         this.secretariaService = secretariaService;
@@ -62,6 +75,14 @@ public class TelaMenuSecretaria extends JFrame {
         add(painel);
     }
 
+    /**
+     * Abre um formulário para o cadastro de um novo paciente, solicitando
+     * CPF, nome, sobrenome, telefone, e-mail, endereço, tipo de convênio
+     * e data de nascimento.
+     * Telefone e e-mail são tratados como opcionais, sendo enviados como
+     * nulos quando deixados em branco. Exibe uma mensagem de erro caso os
+     * dados informados sejam inválidos.
+     */
     private void cadastrarPaciente() {
         JTextField cpf = new JTextField();
         JTextField nome = new JTextField();

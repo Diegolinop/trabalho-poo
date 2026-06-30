@@ -11,6 +11,12 @@ import models.Medico;
 import models.Paciente;
 import services.SecretariaService;
 
+/**
+ * Tela responsável pelo gerenciamento das consultas de um paciente.
+ * Permite buscar as consultas de um paciente pelo CPF, editar diretamente
+ * na tabela os campos de data, horário e tipo, alterar o médico responsável,
+ * cancelar uma consulta selecionada e agendar uma nova consulta.
+ */
 public class TelaConsultas extends JFrame {
 
     private final SecretariaService secretariaService;
@@ -22,7 +28,13 @@ public class TelaConsultas extends JFrame {
     private boolean atualizandoProgramaticamente;
 
     private static final String[] COLUNAS = {"Data", "Horário", "Médico", "Tipo"};
-
+    
+    /**
+     * Constrói a tela de gerenciamento de consultas, montando o campo de
+     * busca por CPF, a tabela editável de consultas e os botões de ação.
+     * @param secretariaService serviço utilizado para buscar, agendar,
+     *                           atualizar e cancelar consultas.
+     */
     public TelaConsultas(SecretariaService secretariaService) {
         super("Gerenciar Consultas");
         this.secretariaService = secretariaService;
@@ -75,6 +87,12 @@ public class TelaConsultas extends JFrame {
         add(painelBotoes, BorderLayout.SOUTH);
     }
 
+    /**
+     * Busca o paciente pelo CPF informado no campo de busca e, caso
+     * encontrado, carrega suas consultas na tabela.
+     * Exibe uma mensagem de erro caso nenhum paciente seja encontrado
+     * com o CPF informado.
+     */
     private void buscarConsultas() {
         String cpf = campoCpf.getText();
         pacienteAtual = secretariaService.buscarPacientePorCpf(cpf);
@@ -87,6 +105,13 @@ public class TelaConsultas extends JFrame {
         carregarConsultas(cpf);
     }
 
+    /**
+     * Carrega na tabela todas as consultas associadas ao CPF informado.
+     * Limpa as linhas existentes antes de preencher a tabela novamente e
+     * desativa temporariamente a escuta de edição de células para evitar
+     * disparos indevidos do listener durante o recarregamento.
+     * @param cpf CPF do paciente cujas consultas serão carregadas.
+     */
     private void carregarConsultas(String cpf) {
         atualizandoProgramaticamente = true;
         consultas = secretariaService.buscarConsultasPorCpfPaciente(cpf);
@@ -103,6 +128,14 @@ public class TelaConsultas extends JFrame {
         atualizandoProgramaticamente = false;
     }
 
+    /**
+     * Trata a edição de uma célula da tabela de consultas, propagando a
+     * alteração para o serviço correspondente de acordo com a coluna editada.
+     * Ignora eventos disparados durante o recarregamento programático da
+     * tabela. Caso a atualização seja inválida, exibe uma mensagem de erro
+     * e recarrega a tabela para descartar a edição malsucedida.
+     * @param evento evento de alteração disparado pelo modelo da tabela.
+     */
     private void onCelulaEditada(TableModelEvent evento) {
         if (atualizandoProgramaticamente || evento.getType() != TableModelEvent.UPDATE) {
             return;
@@ -137,6 +170,13 @@ public class TelaConsultas extends JFrame {
         }
     }
 
+    /**
+     * Altera o médico responsável pela consulta selecionada na tabela.
+     * Solicita o CRM do novo médico por meio de uma caixa de diálogo,
+     * valida sua existência e atualiza a consulta selecionada. Exibe uma
+     * mensagem de erro caso nenhuma consulta esteja selecionada ou o
+     * médico informado não seja encontrado.
+     */
     private void alterarMedico() {
         int linha = tabela.getSelectedRow();
         if (linha < 0) {
@@ -158,7 +198,12 @@ public class TelaConsultas extends JFrame {
         secretariaService.atualizarMedicoConsulta(consultas.get(linha), medico);
         carregarConsultas(pacienteAtual.getCpf());
     }
-
+    
+    /**
+     * Cancela a consulta atualmente selecionada na tabela, mediante
+     * confirmação do usuário.
+     * Exibe uma mensagem caso nenhuma consulta esteja selecionada.
+     */
     private void cancelarSelecionada() {
         int linha = tabela.getSelectedRow();
         if (linha < 0) {
@@ -175,6 +220,16 @@ public class TelaConsultas extends JFrame {
         }
     }
 
+    /**
+     * Abre um formulário para agendamento de uma nova consulta, solicitando
+     * o CPF do paciente, o CRM do médico, a data, o horário e o tipo da
+     * consulta.
+     * Valida a existência de médicos e pacientes cadastrados antes de
+     * permitir o agendamento, busca o paciente e o médico informados, e
+     * recarrega a tabela de consultas do paciente após o agendamento bem
+     * sucedido. Exibe mensagens de erro em caso de dados inválidos ou
+     * entidades não encontradas.
+     */
     private void agendarConsulta() {
         if (!secretariaService.existemMedicosEPacientesCadastrados()) {
             JOptionPane.showMessageDialog(this, "Cadastre pelo menos um médico e um paciente antes de agendar.");

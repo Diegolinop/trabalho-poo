@@ -8,6 +8,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
+/**
+ * Tela que representa o menu principal de navegação do médico.
+ * Exibe as opções de listar pacientes, acessar o histórico médico,
+ * gerenciar prontuários e gerar relatórios médicos, além de informações
+ * do médico autenticado.
+ */
 public class TelaMenuMedico extends JFrame {
 
     private final MedicoService medicoService;
@@ -21,6 +27,14 @@ public class TelaMenuMedico extends JFrame {
     private JButton btnRelatorios;
     private JButton btnVoltar;
 
+    /**
+     * Constrói o menu do médico já autenticado, recebido após a validação
+     * do CRM em outra tela.
+     * @param medicoService serviço utilizado para as operações disponíveis
+     *                       no menu do médico.
+     * @param medico médico autenticado cujo nome e especialidade são
+     *               exibidos no subtítulo da tela.
+     */
     public TelaMenuMedico(MedicoService medicoService, Medico medico) {
         this.medicoService = medicoService;
         this.medico = medico;
@@ -32,6 +46,11 @@ public class TelaMenuMedico extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Inicializa e organiza os componentes visuais da tela, incluindo os
+     * rótulos de título e subtítulo, os botões de navegação e o layout
+     * responsável pelo posicionamento de cada elemento.
+     */
     private void initComponents() {
         lblTitulo    = new JLabel("Menu Médico");
         lblTitulo.setFont(new java.awt.Font("Cantarell", java.awt.Font.BOLD, 24));
@@ -90,6 +109,12 @@ public class TelaMenuMedico extends JFrame {
         pack();
     }
 
+    /**
+     * Exibe em uma tabela não editável a lista de todos os pacientes
+     * cadastrados no sistema, com CPF, nome e tipo de convênio.
+     * Exibe uma mensagem informativa caso não existam pacientes
+     * cadastrados.
+     */
     private void listarPacientes() {
         List<Paciente> pacientes = medicoService.listarPacientes();
 
@@ -118,6 +143,11 @@ public class TelaMenuMedico extends JFrame {
         JOptionPane.showMessageDialog(this, scroll, "Lista de Pacientes", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Solicita o CPF de um paciente e, caso encontrado, abre a tela de
+     * histórico médico correspondente.
+     * Exibe uma mensagem de erro caso o paciente não seja encontrado.
+     */
     private void abrirHistorico() {
         String cpf = JOptionPane.showInputDialog(this, "Digite o CPF do paciente:",
             "Histórico Médico", JOptionPane.QUESTION_MESSAGE);
@@ -132,10 +162,16 @@ public class TelaMenuMedico extends JFrame {
         new TelaHistoricoMedico(medicoService, paciente).setVisible(true);
     }
 
+    /**
+     * Abre a tela de gerenciamento de prontuários do médico autenticado.
+     */
     private void abrirProntuario() {
         new TelaProntuario(medicoService, medico).setVisible(true);
     }
 
+    /**
+     * Abre a tela de relatórios médicos do médico autenticado.
+     */
     private void abrirRelatorios() {
         new TelaRelatorioMedico(medicoService, medico).setVisible(true);
     }

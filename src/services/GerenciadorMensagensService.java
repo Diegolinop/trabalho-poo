@@ -70,6 +70,17 @@ public class GerenciadorMensagensService {
         }
     }
     
+    /**
+     * Gera o texto formatado dos lembretes de consulta referentes a um
+     * determinado dia, similar a saída do envio de mensagens para
+     * exibição em tela.
+     * Para cada consulta do dia, monta um bloco com os dados do paciente
+     * e da consulta, indicando se o lembrete seria enviado por e-mail,
+     * por SMS, por ambos, ou se não há contato cadastrado para o envio.
+     * @param diaSeguinte data para a qual os lembretes serão gerados.
+     * @return texto formatado com os lembretes do dia informado, ou uma
+     *         mensagem indicando que nenhuma consulta foi encontrada.
+     */
     public String gerarTextoMensagens(String diaSeguinte) {
         List<Consulta> consultasDoDia = consultaRepository.buscarPorData(diaSeguinte);
         StringBuilder sb = new StringBuilder();

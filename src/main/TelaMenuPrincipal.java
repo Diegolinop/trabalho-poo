@@ -8,16 +8,26 @@ import models.Secretaria;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Tela inicial do sistema Saúde & Cia. 
+ * responsável por direcionar o usuário para o menu correspondente ao
+ * seu perfil (secretária ou médico), além de permitir o gerenciamento de
+ * mensagens de lembrete de consultas e o encerramento do sistema.
+ */
 public class TelaMenuPrincipal extends javax.swing.JFrame {
     private SecretariaService secretariaService;
     private MedicoService medicoService;
     private GerenciadorMensagensService gerenciadorMensagensService;
 
-    /**
-     * Construtor atualizado para receber os serviços, 
-     * assim como o seu MenuPrincipal do console fazia.
-     * 
-     * @param secretariaService TODO: escrever essas porra de param
+/**
+     * Construtor atualizado para receber os serviços, assim como o
+     * MenuPrincipal do console fazia.
+     * @param secretariaService serviço utilizado para as operações da
+     *                          secretária.
+     * @param medicoService serviço utilizado para as operações do médico.
+     * @param gerenciadorMensagensService serviço utilizado para o envio
+     *                                    e a geração de texto de
+     *                                    lembretes de consulta.
      */
     public TelaMenuPrincipal(SecretariaService secretariaService, MedicoService medicoService, GerenciadorMensagensService gerenciadorMensagensService) {
         
@@ -32,6 +42,11 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Inicializa e organiza os componentes visuais da tela, incluindo os
+     * rótulos de título e subtítulo, os botões de navegação e o layout
+     * responsável pelo posicionamento de cada elemento.
+     */
     @SuppressWarnings("unchecked")
     private void initComponents() {
         lblTitulo = new javax.swing.JLabel();
@@ -111,6 +126,12 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         pack();
     }
 
+    /**
+     * Solicita a matrícula da secretária por meio de uma caixa de
+     * diálogo e, caso encontrada, abre o menu correspondente. Exibe
+     * uma mensagem de erro caso a secretária não seja encontrada.
+     * @param evt evento de clique disparado pelo botão de secretária.
+     */
     private void btnSecretariaActionPerformed(java.awt.event.ActionEvent evt) {
         String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula:", "", JOptionPane.QUESTION_MESSAGE);
         if (matricula == null) return;
@@ -123,6 +144,12 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         new TelaMenuSecretaria(secretariaService, secretaria).setVisible(true);
     }
 
+    /**
+     * Solicita o CRM do médico por meio de uma caixa de diálogo e, caso
+     * encontrado, abre o menu correspondente. Exibe uma mensagem de erro
+     * caso o médico não seja encontrado.
+     * @param evt evento de clique disparado pelo botão de médico.
+     */
     private void btnMedicoActionPerformed(java.awt.event.ActionEvent evt) {
         String crm = JOptionPane.showInputDialog(this, "Digite o CRM:", "", JOptionPane.QUESTION_MESSAGE);
         if (crm == null) return;
@@ -135,6 +162,12 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         new TelaMenuMedico(medicoService, medico).setVisible(true);
     }
     
+    /**
+     * Solicita a data do dia seguinte por meio de uma caixa de diálogo,
+     * dispara o envio dos lembretes de consulta e exibe o resultado
+     * formatado em uma caixa de diálogo com rolagem.
+     * @param evt evento de clique disparado pelo botão de mensagens.
+     */
     private void btnMensagensActionPerformed(java.awt.event.ActionEvent evt) {
         String data = JOptionPane.showInputDialog(this, 
             "Digite a data do dia seguinte para enviar lembretes (dd/mm/aaaa):", 
@@ -156,6 +189,10 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
             "Lembretes Enviados - " + data, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Encerra a execução do sistema.
+     * @param evt evento de clique disparado pelo botão de saída.
+     */
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }

@@ -7,6 +7,12 @@ import services.MedicoService;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tela responsável pelo gerenciamento do histórico médico de um paciente.
+ * Permite cadastrar, atualizar, remover e exibir o histórico médico,
+ * incluindo condições de saúde booleanas (fuma, bebe, colesterol, diabetes,
+ * doença cardíaca) e listas de cirurgias e alergias.
+ */
 public class TelaHistoricoMedico extends JFrame {
 
     private final MedicoService medicoService;
@@ -20,6 +26,13 @@ public class TelaHistoricoMedico extends JFrame {
     private JButton btnMostrar;
     private JButton btnVoltar;
 
+    /**
+     * Constrói a tela de histórico médico para o paciente informado, já
+     * recebido após a busca por CPF realizada em outra tela.
+     * @param medicoService serviço utilizado para consultar e manipular o
+     *                       histórico médico do paciente.
+     * @param paciente paciente cujo histórico médico será exibido e gerenciado.
+     */
     public TelaHistoricoMedico(MedicoService medicoService, Paciente paciente) {
         this.medicoService = medicoService;
         this.paciente = paciente;
@@ -31,6 +44,11 @@ public class TelaHistoricoMedico extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Inicializa e organiza os componentes visuais da tela, incluindo os
+     * rótulos de título e paciente, os botões de ação e o layout responsável
+     * pelo posicionamento de cada elemento.
+     */
     private void initComponents() {
         lblTitulo   = new JLabel("Histórico Médico");
         lblTitulo.setFont(new Font("Cantarell", Font.BOLD, 24));
@@ -89,6 +107,13 @@ public class TelaHistoricoMedico extends JFrame {
         pack();
     }
 
+    /**
+     * Cadastra um novo histórico médico para o paciente.
+     * Caso já exista um histórico cadastrado, solicita confirmação do
+     * usuário antes de sobrescrevê-lo. Exibe uma caixa de diálogo com
+     * checkboxes para as condições de saúde booleanas e, em seguida,
+     * solicita em loop a inclusão de cirurgias e alergias.
+     */
     private void cadastrarHistorico() {
         if (medicoService.verificarHistoricoMedico(paciente)) {
             int confirmacao = JOptionPane.showConfirmDialog(this,
@@ -125,6 +150,15 @@ public class TelaHistoricoMedico extends JFrame {
             "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Solicita repetidamente ao usuário a inclusão de itens (cirurgias ou
+     * alergias) por meio de caixas de diálogo, encerrando o loop quando o
+     * usuário cancelar ou deixar o campo em branco.
+     * @param tipo nome do tipo de item sendo adicionado, usado nas mensagens
+     *             exibidas ao usuário (ex: "cirurgia", "alergia").
+     * @param ehCirurgia indica se o item a ser adicionado é uma cirurgia
+     *                   (true) ou uma alergia (false).
+     */
     private void adicionarItensEmLoop(String tipo, boolean ehCirurgia) {
         while (true) {
             String item = JOptionPane.showInputDialog(this,
@@ -136,6 +170,13 @@ public class TelaHistoricoMedico extends JFrame {
         }
     }
 
+    /**
+     * Permite atualizar um dado específico do histórico médico do paciente.
+     * Exibe um menu de opções com os campos disponíveis e direciona para o
+     * método apropriado conforme a escolha: campo booleano, lista de
+     * cirurgias ou lista de alergias. Exibe um aviso caso o paciente ainda
+     * não possua histórico cadastrado.
+     */
     private void atualizarHistorico() {
         if (!medicoService.verificarHistoricoMedico(paciente)) {
             JOptionPane.showMessageDialog(this, "O paciente não possui histórico médico.",
@@ -159,6 +200,15 @@ public class TelaHistoricoMedico extends JFrame {
         }
     }
 
+    /**
+     * Atualiza um campo booleano específico do histórico médico do paciente,
+     * exibindo uma checkbox pré-marcada com o valor atual salvo antes de
+     * confirmar a alteração.
+     * @param campo índice do campo booleano a ser atualizado (0 a 4,
+     *              correspondendo a fuma, bebe, colesterol, diabetes e
+     *              doença cardíaca, respectivamente).
+     * @param nome nome do campo, usado nas mensagens exibidas ao usuário.
+     */
     private void atualizarCampoBooleano(int campo, String nome) {
         HistoricoMedico h = paciente.getHistoricoMedico();
 
@@ -187,6 +237,15 @@ public class TelaHistoricoMedico extends JFrame {
         JOptionPane.showMessageDialog(this, nome + " atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Permite adicionar ou remover um item (cirurgia ou alergia) da lista
+     * correspondente do histórico médico do paciente, conforme a ação
+     * escolhida pelo usuário.
+     * @param tipo nome do tipo de item sendo gerenciado, usado nas mensagens
+     *             exibidas ao usuário (ex: "cirurgia", "alergia").
+     * @param ehCirurgia indica se o item a ser gerenciado é uma cirurgia
+     *                   (true) ou uma alergia (false).
+     */
     private void atualizarLista(String tipo, boolean ehCirurgia) {
         String[] acoes = {"Adicionar", "Remover"};
         int acao = JOptionPane.showOptionDialog(this, "O que deseja fazer?", "Gerenciar " + tipo + "s",
@@ -213,6 +272,11 @@ public class TelaHistoricoMedico extends JFrame {
         }
     }
 
+    /**
+     * Remove o histórico médico do paciente, mediante confirmação do
+     * usuário. Exibe um aviso caso o paciente ainda não possua histórico
+     * cadastrado.
+     */
     private void removerHistorico() {
         if (!medicoService.verificarHistoricoMedico(paciente)) {
             JOptionPane.showMessageDialog(this, "O paciente não possui histórico médico.",
@@ -229,6 +293,12 @@ public class TelaHistoricoMedico extends JFrame {
         JOptionPane.showMessageDialog(this, "Histórico removido com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Exibe em uma caixa de diálogo, em formato de texto monoespaçado, o
+     * histórico médico completo do paciente, incluindo as condições de
+     * saúde booleanas e as listas de cirurgias e alergias. 
+     * Exibe um aviso caso o paciente ainda não possua histórico cadastrado.
+     */
     private void mostrarHistorico() {
         if (!medicoService.verificarHistoricoMedico(paciente)) {
             JOptionPane.showMessageDialog(this, "O paciente não possui histórico médico.",

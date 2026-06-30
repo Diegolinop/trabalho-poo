@@ -9,6 +9,14 @@ import models.Consulta;
 import models.Paciente;
 import services.SecretariaService;
 
+/**
+ * Tela responsável por exibir relatórios de consultas agendadas para uma
+ * determinada data.
+ * Permite filtrar as consultas por três critérios: todas as consultas,
+ * apenas pacientes com e-mail ou celular cadastrado, ou apenas pacientes
+ * sem nenhum contato cadastrado. Os resultados são exibidos em uma
+ * JTable não editável.
+ */
 public class TelaRelatorioConsultas extends JFrame {
 
     private final SecretariaService secretariaService;
@@ -19,7 +27,14 @@ public class TelaRelatorioConsultas extends JFrame {
     private static final String[] COLUNAS = {
             "Paciente", "CPF", "E-mail", "Celular", "Data", "Horário", "Médico", "Tipo", "Duração"
     };
-
+    
+    /**
+     * Constrói a tela de relatório de consultas, montando os componentes
+     * de filtro (data e tipo de relatório), a tabela de resultados e os
+     * botões de ação.
+     * @param secretariaService serviço utilizado para gerar os relatórios
+     *                           de consultas conforme o filtro selecionado.
+     */
     public TelaRelatorioConsultas(SecretariaService secretariaService) {
         super("Relatório de Consultas");
         this.secretariaService = secretariaService;
@@ -66,6 +81,14 @@ public class TelaRelatorioConsultas extends JFrame {
         add(painelInferior, BorderLayout.SOUTH);
     }
 
+    /**
+     * Gera o relatório de consultas com base na data informada e no filtro
+     * selecionado no combo box.
+     * Valida se a data foi preenchida, seleciona o método de busca apropriado
+     * no secretariaService de acordo com o filtro escolhido (todas,
+     * com contato, ou sem contato) e popula a tabela com os resultados.
+     * Exibe um aviso caso nenhuma consulta seja encontrada.
+     */
     private void gerarRelatorio() {
         String data = campoData.getText();
         if (data.isBlank()) {
@@ -108,7 +131,14 @@ public class TelaRelatorioConsultas extends JFrame {
             });
         }
     }
-
+    
+    /**
+     * Formata um campo de contato (e-mail ou telefone) para exibição na tabela.
+     * @param contato o valor do contato armazenado no paciente; pode ser
+     *                "null" ou vazio caso não tenha sido cadastrado.
+     * @return o próprio contato, ou o texto "não cadastrado" caso
+     *         esteja em branco ou ausente.
+     */
     private String mostrarContato(String contato) {
         if (contato == null || contato.isBlank()) {
             return "não cadastrado";
