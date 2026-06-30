@@ -4,6 +4,7 @@ import services.GerenciadorMensagensService;
 import services.MedicoService;
 import services.SecretariaService;
 import models.Medico;
+import models.Secretaria;
 
 import javax.swing.JOptionPane;
 
@@ -111,7 +112,15 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     }
 
     private void btnSecretariaActionPerformed(java.awt.event.ActionEvent evt) {
-        String crm = JOptionPane.showInputDialog(null, "Digite a matrícula:", "", JOptionPane.QUESTION_MESSAGE);
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula:", "", JOptionPane.QUESTION_MESSAGE);
+        if (matricula == null) return;
+
+        Secretaria secretaria = secretariaService.buscarSecretariaPorMatricula(matricula);
+        if (secretaria == null) {
+            JOptionPane.showMessageDialog(this, "Secretário não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        new TelaMenuSecretaria(secretariaService, secretaria).setVisible(true);
     }
 
     private void btnMedicoActionPerformed(java.awt.event.ActionEvent evt) {
