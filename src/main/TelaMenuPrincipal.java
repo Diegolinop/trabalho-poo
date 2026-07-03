@@ -9,7 +9,7 @@ import models.Secretaria;
 import javax.swing.JOptionPane;
 
 /**
- * Tela inicial do sistema Saúde & Cia. 
+ * Tela inicial do sistema Saúde e Cia. 
  * responsável por direcionar o usuário para o menu correspondente ao
  * seu perfil (secretária ou médico), além de permitir o gerenciamento de
  * mensagens de lembrete de consultas e o encerramento do sistema.
